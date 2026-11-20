@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Links Laura Oliveira</title>
+  <meta name="description" content="Laura Oliveira — Design & Web design. Orçamento, portfólio e redes sociais em um só lugar." />
+  <meta name="theme-color" content="#050506" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="canonical" href="https://bio.lauraoliveiradesigner.com.br/" />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
+  <!-- Open Graph (prévia ao compartilhar o link) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:title" content="Laura Oliveira — Design & Web design" />
+  <meta property="og:description" content="Vamos elevar o nível do seu negócio? Orçamento, portfólio e redes." />
+  <meta property="og:url" content="https://bio.lauraoliveiradesigner.com.br/" />
+  <meta property="og:image" content="https://bio.lauraoliveiradesigner.com.br/assets/og.jpg" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- fontes hospedadas no próprio site: sem depender do Google Fonts -->
+  <link rel="preload" href="assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/laura.webp" as="image" type="image/webp" fetchpriority="high" />
+  <style>
+@font-face{font-family:"Manrope";src:url(assets/fonts/manrope.woff2) format("woff2");font-weight:200 800;font-style:normal;font-display:swap;}
+@font-face{font-family:"Lora";src:url(assets/fonts/lora-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap;}
+:root {
+  --bg: #050506;
+  --card: #0b0b0d;
+  --card-2: #101013;
+  --line: rgba(255,255,255,0.09);
+  --text: #f5f5f6;
+  --muted: rgba(255,255,255,0.54);
+  --dim: rgba(255,255,255,0.38);
+  --accent: #FF0A33;
+  --accent-2: #ff4d6a;
+  --sans: "Manrope", system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(0.22,1,0.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;}
+
+/* ── fundo WebGL ── */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;filter:brightness(1.15);}
+.bglines{position:absolute;inset:0;width:100%;height:100%;}
+
+/* ── cursor custom: ponto + anel (só com mouse) ── */
+#cur-dot,#cur-ring{display:none;}
+@media(hover:hover) and (pointer:fine){
+  body.has-cursor{cursor:none;}
+  body.has-cursor a{cursor:none;}
+  #cur-dot,#cur-ring{display:block;position:fixed;left:0;top:0;pointer-events:none;opacity:0;transition:opacity .2s;will-change:transform;}
+  #cur-dot{
+    z-index:9999;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;
+    background:#fff;
+    box-shadow:0 0 6px 3px #FF0A33, 0 0 18px 8px rgba(255,10,51,0.5);
+  }
+  #cur-ring{z-index:9998;width:34px;height:34px;margin:-17px 0 0 -17px;}
+  #cur-ring>i{
+    position:absolute;inset:0;border-radius:50%;
+    border:1.5px solid rgba(255,10,51,0.7);
+    box-shadow:0 0 10px 2px rgba(255,10,51,0.3), inset 0 0 10px 2px rgba(255,10,51,0.1);
+    transition:transform .18s var(--ease),border-color .18s,box-shadow .18s;
+  }
+  #cur-ring.is-hover>i{transform:scale(1.59);border-color:#FF0A33;box-shadow:0 0 22px 8px rgba(255,10,51,0.5),inset 0 0 14px 4px rgba(255,10,51,0.2);}
+  .cur-on #cur-dot,.cur-on #cur-ring{opacity:1;}
+}
+
+/* ── layout ── */
+.wrap{
+  position:relative;z-index:2;
+  width:100%;
+  max-width:clamp(480px,52vw,820px);
+  margin:0 auto;
+  padding:clamp(32px,6vh,64px) clamp(16px,3vw,32px) 72px;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+
+/* ── avatar ── */
+.avatar{position:relative;width:112px;height:112px;margin-bottom:22px;}
+.avatar-orbit-wrapper .avatar{width:clamp(112px,29vw,148px);height:clamp(112px,29vw,148px);}
+.avatar__ring{
+  position:absolute;inset:-7px;border-radius:50%;
+  background:conic-gradient(from 0deg,#FF0A33 0%,#ff6680 25%,#FF0A33 50%,#aa001f 75%,#FF0A33 100%);
+  animation:spin 7s linear infinite;
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3.5px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3.5px));
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes o-spin-cw{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+@keyframes o-spin-ccw{from{transform:translate(-50%,-50%) rotate(0deg);}to{transform:translate(-50%,-50%) rotate(-360deg);}}
+.avatar__img{
+  position:absolute;inset:0;width:100%;height:100%;
+  border-radius:50%;object-fit:cover;object-position:center 18%;
+  border:3.5px solid #050506;
+  box-shadow:0 16px 48px -12px rgba(255,10,51,0.75);
+  background:linear-gradient(150deg,#FF0A33,#8B0018);
+}
+
+/* ── texto ── */
+.name{
+  font-size:clamp(34px,9vw,52px);font-weight:800;
+  letter-spacing:-0.035em;line-height:1.0;
+  background:linear-gradient(135deg,#ffffff 40%,rgba(255,255,255,0.75) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.handle{
+  color:var(--accent-2);font-size:clamp(15px,4vw,18px);margin-top:9px;
+  letter-spacing:0.01em;font-weight:500;
+}
+.bio{
+  color:rgba(255,255,255,0.85);
+  font-size:clamp(14.5px,3.8vw,17px);
+  margin-top:20px;line-height:1.18;
+  font-weight:400;letter-spacing:-0.01em;
+  text-wrap:pretty;max-width:100%;
+}
+@media(max-width:430px){
+  .bio{font-size:13px;text-wrap:balance;letter-spacing:-0.02em;}
+}
+.bio em{font-style:italic;font-family:'Lora',Georgia,serif;color:#fff;font-weight:700;letter-spacing:0;}
+
+/* ── socials ── */
+.socials{display:flex;gap:9px;margin-top:22px;}
+.socials a{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:10px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  color:rgba(255,255,255,0.75);
+  transition:transform .25s var(--ease),background .25s,border-color .25s,color .25s,box-shadow .25s;
+}
+.socials a:hover,.socials a:focus-visible{
+  transform:translateY(-3px);background:rgba(255,10,51,0.14);
+  border-color:rgba(255,77,106,0.45);color:#fff;
+  box-shadow:0 8px 24px -8px rgba(255,10,51,0.35);
+}
+.socials svg{width:17px;height:17px;}
+a:focus-visible{outline:2px solid var(--accent-2);outline-offset:3px;}
+
+/* ── links ── */
+.links{width:100%;display:flex;flex-direction:column;gap:14px;margin-top:32px;}
+
+.link{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;flex-direction:row;align-items:center;
+  min-height:clamp(106px,12vw,160px);
+  border-radius:clamp(14px,1.5vw,22px);
+  background:#0c0c0e;
+  color:#fff;
+  transition:transform .32s var(--ease),box-shadow .32s;
+}
+.link--alt{background:#16141a;}
+.link:hover{transform:translateY(-4px);}
+
+.link__img-wrap{
+  flex:0 0 auto;
+  width:55%;
+  aspect-ratio:1400/675;
+  align-self:center;
+  position:relative;
+  overflow:hidden;
+}
+.link__bg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:fill;
+  transition:transform .55s var(--ease);
+  user-select:none;pointer-events:none;
+}
+.link:hover .link__bg{transform:scale(1.04);}
+
+.link__img-wrap::after{
+  content:"";position:absolute;top:0;right:0;bottom:0;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(255,10,51,0.22),transparent);
+  z-index:1;
+}
+
+.link__tx{
+  flex:1;min-width:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(14px,2vw,24px) clamp(16px,2.2vw,28px);
+  text-align:left;
+  position:relative;z-index:1;
+}
+.link__tx b{
+  display:block;font-weight:700;font-size:clamp(13px,1.6vw,20px);
+  letter-spacing:-0.02em;line-height:1.25;color:#fff;
+  text-wrap:balance;
+}
+.link__tx span{
+  display:block;font-size:clamp(10px,1.2vw,15px);
+  color:rgba(255,255,255,0.52);
+  line-height:1.5;margin-top:5px;
+  text-wrap:pretty;
+  overflow-wrap:break-word;
+}
+
+/* shine sweep */
+.link::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,0.04) 50%,transparent 70%);
+  transform:translateX(-130%);transition:transform .75s var(--ease);
+}
+.link:hover::after{transform:translateX(130%);}
+
+/* ── footer ── */
+.foot{
+  margin-top:40px;font-size:11.5px;color:rgba(255,255,255,0.28);
+  letter-spacing:0.04em;text-transform:uppercase;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding-bottom:8px;
+}
+.foot em{
+  font-style:italic;font-family:'Lora',Georgia,serif;
+  color:#fff;font-weight:700;letter-spacing:0;text-transform:none;
+  font-size:13px;
+}
+.foot img{height:18px;width:auto;}
+
+/* ── reveal (só com JS ativo, para nunca esconder conteúdo) ── */
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.js .reveal.is-in{opacity:1;transform:none;}
+.js .link-wrap.reveal{transition-delay:calc(var(--i,0)*55ms);}
+
+/* ── MOBILE: cards empilhados (banner em cima, texto embaixo) ── */
+@media(max-width:520px){
+  .links{gap:22px;}
+  .link{flex-direction:column;align-items:stretch;min-height:unset;}
+  .link__img-wrap{width:100%;align-self:auto;}
+  .link__img-wrap::after{display:none;}
+  .link__tx{padding:16px 20px 20px;text-align:center;align-items:center;}
+  .link__tx b{font-size:clamp(14px,4.5vw,17px);}
+  .link__tx span{font-size:clamp(12px,3.2vw,14px);}
+}
+
+/* ═══════════ SISTEMA ORBITAL ═══════════ */
+.avatar-orbit-wrapper{
+  position:relative;
+  width:clamp(280px,84vw,440px);
+  height:clamp(280px,84vw,440px);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2px;
+}
+.avatar-orbit-wrapper .avatar{margin-bottom:0;position:relative;z-index:1;}
+.orbit-rings-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.orbit-pills-fg{position:absolute;inset:0;pointer-events:none;z-index:2;}
+
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%);}
+.orbit-ring--inner{
+  width:clamp(168px,50vw,264px);height:clamp(168px,50vw,264px);
+  border:1px solid rgba(255,255,255,0.20);
+  box-shadow:0 0 30px rgba(255,10,51,0.06), inset 0 0 30px rgba(255,10,51,0.04);
+  animation:o-spin-cw 20s linear infinite;
+}
+.orbit-ring--inner::before{
+  content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:7px;height:7px;border-radius:50%;background:#FF0A33;
+  box-shadow:0 0 10px 4px rgba(255,10,51,0.75), 0 0 22px 8px rgba(255,10,51,0.35);
+}
+.orbit-ring--outer{
+  width:clamp(244px,73vw,383px);height:clamp(244px,73vw,383px);
+  border:1px solid rgba(255,255,255,0.15);
+  animation:o-spin-ccw 30s linear infinite;
+}
+.orbit-ring--outer::before{
+  content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.7);
+  box-shadow:0 0 8px 3px rgba(255,10,51,0.5), 0 0 18px 6px rgba(255,10,51,0.25);
+}
+
+.orbit-spinner{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%);}
+.orbit-spinner--inner{width:clamp(168px,50vw,264px);height:clamp(168px,50vw,264px);}
+.orbit-spinner--outer{width:clamp(244px,73vw,383px);height:clamp(244px,73vw,383px);}
+
+.orbit-pill-wrap{
+  position:absolute;top:50%;left:50%;width:0;height:0;
+  transform:rotate(var(--angle)) translateX(var(--r));
+  will-change:transform;
+}
+.orbit-spinner--inner .orbit-pill-wrap{--r:clamp(84px,25vw,132px);}
+.orbit-spinner--outer .orbit-pill-wrap{--r:clamp(122px,36.5vw,191px);}
+.orbit-pill-wrap::before{
+  content:'';position:absolute;left:0;top:0;width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,0.30);transform:translate(-50%,-50%);
+  box-shadow:0 0 6px 2px rgba(255,10,51,0.35);
+}
+.orbit-pill{
+  position:absolute;left:0;top:0;
+  transform:translateX(-50%) translateY(-50%) rotate(calc(-1 * var(--angle)));
+  white-space:nowrap;font-family:var(--sans);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;
+  color:rgba(255,255,255,0.92);background:rgba(8,8,12,0.80);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,10,51,0.35);border-radius:20px;padding:5px 12px;
+  font-size:clamp(9px,2.3vw,11px);
+  box-shadow:0 2px 18px rgba(0,0,0,0.55);
+}
+.orbit-spinner--inner .orbit-pill{border-color:rgba(255,10,51,0.42);box-shadow:0 0 14px -2px rgba(255,10,51,0.4), 0 2px 18px rgba(0,0,0,0.55);}
+.orbit-spinner--outer .orbit-pill{border-color:rgba(255,10,51,0.22);color:rgba(255,255,255,0.78);background:rgba(8,8,12,0.68);box-shadow:0 0 10px -2px rgba(255,10,51,0.25), 0 2px 18px rgba(0,0,0,0.55);}
+.orbit-pill-wrap:nth-child(odd) .orbit-pill{
+  background:#FF0A33;color:#050506;border-color:#FF0A33;
+  box-shadow:0 0 18px rgba(255,10,51,0.55), 0 2px 18px rgba(0,0,0,0.4);
+}
+
+/* ═══════════ CARDS — borda cônica girando no hover ═══════════ */
+@property --ba{syntax:'<angle>';initial-value:0deg;inherits:false;}
+.link-wrap{
+  position:relative;
+  border-radius:clamp(14px,1.5vw,22px);
+  padding:1.5px;
+  box-shadow:0 4px 24px -10px rgba(255,10,51,0.18);
+  transition:box-shadow 0.4s var(--ease);
+}
+.link-wrap::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:conic-gradient(from var(--ba),
+    transparent 0deg, transparent 200deg,
+    rgba(255,77,106,0.45) 238deg, #FF0A33 265deg,
+    rgba(255,255,255,0.92) 270deg, #FF0A33 275deg,
+    rgba(255,77,106,0.45) 305deg, transparent 345deg, transparent 360deg);
+  opacity:0;transition:opacity 0.5s;pointer-events:none;z-index:0;
+}
+.link-wrap:hover::before{opacity:1;animation:card-border-spin 2.2s linear infinite;}
+.link-wrap:hover{
+  box-shadow:0 0 0 1px rgba(255,10,51,0.18), 0 12px 40px -8px rgba(255,10,51,0.3), 0 28px 60px -20px rgba(255,10,51,0.18);
+}
+@keyframes card-border-spin{to{--ba:360deg;}}
+.link-wrap .link{position:relative;z-index:1;width:100%;}
+.link::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:65%;
+  background:radial-gradient(ellipse at 50% 105%, rgba(255,10,51,0.11) 0%, transparent 68%);
+  z-index:0;opacity:0;transition:opacity 0.55s var(--ease);pointer-events:none;
+}
+.link:hover::before{opacity:1;}
+
+/* sem hover em telas de toque (evita card "preso" levantado depois do toque) */
+@media(hover:none){
+  .link:hover,.link:hover .link__bg{transform:none;}
+  .link-wrap:hover::before{opacity:0;animation:none;}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1;transform:none;transition:none;}
+  .avatar__ring,.orbit-ring--inner,.orbit-ring--outer,.link-wrap::before{animation:none!important;}
+}
+  </style>
+  <script>document.documentElement.className="js";</script>
+</head>
+<body>
+
+<!-- cursor -->
+<div id="cur-dot" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"><i></i></div>
+
+<!-- fundo WebGL neural noise -->
+<div class="bg" aria-hidden="true">
+  <canvas class="bglines"></canvas>
+</div>
+
+<main class="wrap">
+  <div class="avatar-orbit-wrapper">
+    <div class="orbit-rings-bg" aria-hidden="true">
+      <div class="orbit-ring orbit-ring--inner"></div>
+      <div class="orbit-ring orbit-ring--outer"></div>
+    </div>
+    <div class="orbit-pills-fg" aria-hidden="true">
+      <div class="orbit-spinner orbit-spinner--inner">
+        <div class="orbit-pill-wrap" style="--angle:290deg"><span class="orbit-pill" style="--angle:290deg">Logotipo</span></div>
+        <div class="orbit-pill-wrap" style="--angle:15deg"><span class="orbit-pill" style="--angle:15deg">Web Design</span></div>
+        <div class="orbit-pill-wrap" style="--angle:115deg"><span class="orbit-pill" style="--angle:115deg">UI/UX</span></div>
+        <div class="orbit-pill-wrap" style="--angle:195deg"><span class="orbit-pill" style="--angle:195deg">Branding</span></div>
+      </div>
+      <div class="orbit-spinner orbit-spinner--outer">
+        <div class="orbit-pill-wrap" style="--angle:315deg"><span class="orbit-pill" style="--angle:315deg">Identidade Visual</span></div>
+        <div class="orbit-pill-wrap" style="--angle:50deg"><span class="orbit-pill" style="--angle:50deg">Social Media</span></div>
+        <div class="orbit-pill-wrap" style="--angle:145deg"><span class="orbit-pill" style="--angle:145deg">Design Gráfico</span></div>
+        <div class="orbit-pill-wrap" style="--angle:220deg"><span class="orbit-pill" style="--angle:220deg">Lançamentos</span></div>
+      </div>
+    </div>
+    <div class="avatar">
+      <span class="avatar__ring" aria-hidden="true"></span>
+      <img class="avatar__img" src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high" decoding="async" />
+    </div>
+  </div>
+
+  <h1 class="name">Laura Oliveira</h1>
+  <p class="handle">@lauraoliveira.design</p>
+  <p class="bio">Design &amp; Web design. <em>Vamos</em> elevar<br>o nível do <em>seu negócio?</em></p>
+
+  <div class="socials reveal">
+    <a href="https://www.instagram.com/lauraoliveira.design/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+    <a href="https://wa.me/5569999086476" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.48-.15-.68.15s-.76.96-.94 1.16c-.17.2-.34.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.34M12.05 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89"/></svg></a>
+  </div>
+
+  <!-- LINKS: para editar, troque título, texto, url e imagem de cada card -->
+  <nav class="links" aria-label="Meus links">
+    <div class="link-wrap reveal" style="--i:0">
+      <a class="link" href="https://wa.me/5569999086476" target="_blank" rel="noopener">
+        <div class="link__img-wrap"><img class="link__bg" src="assets/card-whatsapp.webp" alt="" width="900" height="434" decoding="async" draggable="false"></div>
+        <div class="link__tx"><b>Orçamento no WhatsApp</b><span>Tira seu projeto do papel. Respondo rápido.</span></div>
+      </a>
+    </div>
+    <div class="link-wrap reveal" style="--i:1">
+      <a class="link link--alt" href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener">
+        <div class="link__img-wrap"><img class="link__bg" src="assets/card-lumem.webp" alt="" width="900" height="433" decoding="async" draggable="false"></div>
+        <div class="link__tx"><b>LUMEM Estúdio</b><span>Perfil da agência no Instagram.</span></div>
+      </a>
+    </div>
+    <div class="link-wrap reveal" style="--i:2">
+      <a class="link" href="https://www.instagram.com/lauraoliveira.design/" target="_blank" rel="noopener">
+        <div class="link__img-wrap"><img class="link__bg" src="assets/card-instagram.webp" alt="" width="900" height="434" loading="lazy" decoding="async" draggable="false"></div>
+        <div class="link__tx"><b>Instagram</b><span>Bastidores e projetos de design no dia a dia.</span></div>
+      </a>
+    </div>
+    <div class="link-wrap reveal" style="--i:3">
+      <a class="link link--alt" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener">
+        <div class="link__img-wrap"><img class="link__bg" src="assets/card-behance.webp" alt="" width="900" height="433" loading="lazy" decoding="async" draggable="false"></div>
+        <div class="link__tx"><b>Behance</b><span>Meu portfólio completo, projeto por projeto.</span></div>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="foot reveal">
+    <em>Feito por</em> <img src="assets/lumem-logo.webp" alt="LUMEM Estúdio" width="300" height="38" loading="lazy" decoding="async">
+  </footer>
+</main>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── reveal ── */
+  requestAnimationFrame(function(){
+    document.querySelectorAll('.reveal').forEach(function(e){ e.classList.add('is-in'); });
+  });
+
+  /* ── cursor: ponto + anel (sem rastro de partículas) ── */
+  if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
+    var root=document.documentElement, x=0, y=0, queued=false;
+    document.body.classList.add('has-cursor');
+    function paint(){
+      queued=false;
+      var t='translate3d('+x+'px,'+y+'px,0)';
+      dot.style.transform=t; ring.style.transform=t;
+    }
+    window.addEventListener('pointermove',function(e){
+      x=e.clientX; y=e.clientY; root.classList.add('cur-on');
+      if(!queued){ queued=true; requestAnimationFrame(paint); }
+    },{passive:true});
+    document.addEventListener('pointerover',function(e){
+      ring.classList.toggle('is-hover', !!e.target.closest('a,button'));
+    });
+    document.addEventListener('mouseleave',function(){ root.classList.remove('cur-on'); });
+  }
+
+  /* ── órbita: pílulas grudadas nos anéis ── */
+  (function(){
+    if(reduce) return;
+    var inner=[].slice.call(document.querySelectorAll('.orbit-spinner--inner .orbit-pill-wrap'));
+    var outer=[].slice.call(document.querySelectorAll('.orbit-spinner--outer .orbit-pill-wrap'));
+    function prep(w){ return { w:w, p:w.querySelector('.orbit-pill'), a:parseFloat(w.style.getPropertyValue('--angle'))||0 }; }
+    inner=inner.map(prep); outer=outer.map(prep);
+    var iS=document.querySelector('.orbit-spinner--inner'), oS=document.querySelector('.orbit-spinner--outer');
+    var innerR=0, outerR=0;
+    function measure(){ innerR=iS.offsetWidth/2; outerR=oS.offsetWidth/2; }
+    measure(); window.addEventListener('resize',measure);
+    var start=0, raf=0, last=0, STEP=1000/30, visible=true;
+    function place(list,r,delta){
+      for(var i=0;i<list.length;i++){
+        var o=list[i], a=o.a+delta;
+        o.w.style.transform='rotate('+a+'deg) translateX('+r+'px)';
+        o.p.style.transform='translate(-50%,-50%) rotate('+(-a)+'deg)';
+      }
+    }
+    function frame(ts){
+      raf=requestAnimationFrame(frame);
+      if(ts-last<STEP) return; last=ts;
+      if(!start) start=ts;
+      var el=ts-start;
+      place(inner,innerR,(el/20000)*360);
+      place(outer,outerR,-(el/30000)*360);
+    }
+    function run(){ if(!raf && visible && !document.hidden) raf=requestAnimationFrame(frame); }
+    function stop(){ cancelAnimationFrame(raf); raf=0; }
+    document.addEventListener('visibilitychange',function(){ document.hidden?stop():run(); });
+    /* pausa quando a órbita sai da tela (rolando os cards) */
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(en){ visible=en[0].isIntersecting; visible?run():stop(); })
+        .observe(document.querySelector('.avatar-orbit-wrapper'));
+    }
+    run();
+  })();
+
+  /* ── fundo WebGL neural noise (carrega depois da página) ── */
+  function startGL(){
+    var canvas=document.querySelector('.bglines'); if(!canvas) return;
+    var opts={alpha:true,antialias:false,depth:false,stencil:false,powerPreference:'low-power',preserveDrawingBuffer:false};
+    var gl=canvas.getContext('webgl',opts)||canvas.getContext('experimental-webgl',opts);
+    if(!gl) return;
+    var COLOR=[1.0,0.039,0.2], SPEED=0.00085;
+    var VERT='precision mediump float;varying vec2 vUv;attribute vec2 a_position;void main(){vUv=0.5*(a_position+1.0);gl_Position=vec4(a_position,0.0,1.0);}';
+    var FRAG=[
+      'precision mediump float;','varying vec2 vUv;','uniform float u_time;','uniform float u_ratio;',
+      'uniform vec2 u_pointer_position;','uniform vec3 u_color;','uniform float u_speed;',
+      'vec2 rotate(vec2 uv,float th){return mat2(cos(th),sin(th),-sin(th),cos(th))*uv;}',
+      'float neuro_shape(vec2 uv,float t,float p){',
+      '  vec2 sine_acc=vec2(0.0);vec2 res=vec2(0.0);float scale=8.0;',
+      '  for(int j=0;j<12;j++){',
+      '    uv=rotate(uv,1.0);sine_acc=rotate(sine_acc,1.0);',
+      '    vec2 layer=uv*scale+float(j)+sine_acc-t;',
+      '    sine_acc+=sin(layer)+2.4*p;',
+      '    res+=(0.5+0.5*cos(layer))/scale;scale*=1.2;',
+      '  }',
+      '  return res.x+res.y;}',
+      'void main(){',
+      '  vec2 uv=0.5*vUv;uv.x*=u_ratio;',
+      '  vec2 pointer=vUv-u_pointer_position;pointer.x*=u_ratio;',
+      '  float p=clamp(length(pointer),0.0,1.0);p=0.5*pow(1.0-p,2.0);',
+      '  float t=u_speed*u_time;',
+      '  float noise=neuro_shape(uv,t,p);',
+      '  noise=1.2*pow(noise,3.0);noise+=pow(noise,10.0);',
+      '  noise=max(0.0,noise-0.5);noise*=(1.0-length(vUv-0.5));',
+      '  gl_FragColor=vec4(u_color*noise,noise);}'
+    ].join('\n');
+    function compile(src,type){var s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){gl.deleteShader(s);return null;}return s;}
+    var vs=compile(VERT,gl.VERTEX_SHADER), fs=compile(FRAG,gl.FRAGMENT_SHADER); if(!vs||!fs) return;
+    var prog=gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog);
+    if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+    var U={}; ['u_time','u_ratio','u_pointer_position','u_color','u_speed'].forEach(function(n){U[n]=gl.getUniformLocation(prog,n);});
+    var buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,'a_position'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    gl.uniform3f(U.u_color,COLOR[0],COLOR[1],COLOR[2]); gl.uniform1f(U.u_speed,SPEED);
+
+    function resize(){
+      /* resolução baixa fixa; o CSS faz o upscale */
+      var w=Math.min(Math.round(canvas.clientWidth*0.4),480), h=Math.min(Math.round(canvas.clientHeight*0.4),640);
+      if(!w||!h) return;
+      if(canvas.width!==w||canvas.height!==h){ canvas.width=w; canvas.height=h; }
+      gl.uniform1f(U.u_ratio,w/h); gl.viewport(0,0,w,h);
+    }
+    resize(); window.addEventListener('resize',resize);
+
+    var ptr={x:0.5,y:0.5,tX:0.5,tY:0.5};
+    window.addEventListener('pointermove',function(e){ ptr.tX=e.clientX/(innerWidth||1); ptr.tY=e.clientY/(innerHeight||1); },{passive:true});
+
+    function draw(t){
+      ptr.x+=(ptr.tX-ptr.x)*0.15; ptr.y+=(ptr.tY-ptr.y)*0.15;
+      gl.uniform1f(U.u_time,t); gl.uniform2f(U.u_pointer_position,ptr.x,1.0-ptr.y);
+      gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    }
+    if(reduce){ draw(performance.now()); return; } /* um quadro estático */
+    var raf=0, last=0, STEP=1000/24;
+    function loop(ts){ raf=requestAnimationFrame(loop); if(ts-last<STEP) return; last=ts; draw(ts); }
+    raf=requestAnimationFrame(loop);
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden){ cancelAnimationFrame(raf); raf=0; } else if(!raf) raf=requestAnimationFrame(loop);
+    });
+  }
+  function idle(fn){ ('requestIdleCallback' in window) ? requestIdleCallback(fn,{timeout:800}) : setTimeout(fn,200); }
+  if(document.readyState==='complete') idle(startGL); else window.addEventListener('load',function(){ idle(startGL); });
+})();
+</script>
+</body>
+</html>
