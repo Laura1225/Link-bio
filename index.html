@@ -470,6 +470,14 @@ html{overflow-x:clip}
 .scene .sc-txt b{color:#fff;font-size:16px;text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .scene .sc-txt span{color:rgba(255,255,255,.85)}
 .scene .x{z-index:4;background:rgba(5,5,6,.55);color:#fff;border-color:rgba(255,255,255,.2)}
+
+/* computador: imagem aparece no hover e as pílulas continuam por cima */
+@media(hover:hover) and (pointer:fine){
+  .mq-mask{position:relative;z-index:7}
+  .scene .x{display:none}
+  .scene{cursor:default}
+  .scene .sc-txt{padding-top:70px}
+}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
@@ -656,6 +664,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     document.addEventListener('mouseleave',function(){root.classList.remove('cur-on');});
   }
   /* ── cenas animadas de cada serviço ── */
+  var fineP=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   var IMG=['0-logotipo','1-web-design','2-ui-ux','3-branding','4-identidade-visual','5-social-media','6-design-grafico','7-lancamentos'];
   var SC=IMG.map(function(n,i){return '<div class="sc-media m'+(i%4)+'"><img src="assets/servico-'+n+'.webp" alt="" decoding="async"><i class="sc-sweep"></i><i class="sc-dust"></i></div>';});
   var pre=false; function preload(){ if(pre) return; pre=true; IMG.forEach(function(n){ var im=new Image(); im.src='assets/servico-'+n+'.webp'; }); }
@@ -666,11 +675,11 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   function openScene(p){
     var k=+p.dataset.k, br=box.getBoundingClientRect(), pr=p.getBoundingClientRect();
     scene.style.setProperty('--ox',Math.max(0,Math.min(br.width,pr.left+pr.width/2-br.left))+'px'); scene.style.setProperty('--oy',(pr.top+pr.height/2-br.top)+'px');
-    stage.innerHTML=SC[k]; sT.textContent=p.textContent; sD.textContent=DESC[cur][k];
+    if(scene._k!==k){ scene._k=k; stage.innerHTML=SC[k]; } sT.textContent=p.textContent; sD.textContent=DESC[cur][k];
     box.classList.add('open'); scene.removeAttribute('hidden'); requestAnimationFrame(function(){scene.classList.add('on');});
-    clearTimeout(st); st=setTimeout(closeScene,9000);
+    clearTimeout(st); if(!fineP) st=setTimeout(closeScene,9000);
   }
-  function closeScene(){ scene.classList.remove('on'); box.classList.remove('open'); clearTimeout(st); setTimeout(function(){ if(!scene.classList.contains('on')) scene.setAttribute('hidden',''); },600); }
+  function closeScene(){ scene._k=-1; scene.classList.remove('on'); box.classList.remove('open'); clearTimeout(st); setTimeout(function(){ if(!scene.classList.contains('on')) scene.setAttribute('hidden',''); },600); }
   scene.querySelector('.x').addEventListener('click',function(e){e.stopPropagation();closeScene();});
   scene.addEventListener('click',closeScene);
   /* pílulas do "O que eu faço": faíscas ao passar o mouse ou tocar */
@@ -679,7 +688,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       d.style.left=cx+'px';d.style.top=cy+'px';d.style.setProperty('--x',Math.cos(a)*v+'px');d.style.setProperty('--y',Math.sin(a)*v+'px');
       document.body.appendChild(d);setTimeout(function(n){n.remove();},750,d);}}
   mq.addEventListener('pointerover',function(e){var p=e.target.closest('.pill');if(p&&e.pointerType==='mouse'&&!reduce)burst(p);});
-  mq.addEventListener('click',function(e){var p=e.target.closest('.pill');if(!p)return;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop');if(!reduce)burst(p);
+  var ct=0;
+  if(fineP){
+    mq.addEventListener('pointerover',function(e){var p=e.target.closest('.pill'); if(!p) return; clearTimeout(ct); openScene(p);});
+    mq.addEventListener('pointerout',function(e){ if(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.pill')) return; clearTimeout(ct); ct=setTimeout(closeScene,180);});
+  }
+  mq.addEventListener('click',function(e){var p=e.target.closest('.pill');if(!p||fineP)return;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop');if(!reduce)burst(p);
     setTimeout(function(){p.classList.remove('pop');},700); openScene(p);});
   /* portfólio: arrastar com o mouse (com inércia) */
   (function(){
