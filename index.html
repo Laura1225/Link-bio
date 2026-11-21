@@ -267,7 +267,8 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 .mq-track{display:flex;gap:10px;width:max-content;animation:nxsMq 28s linear infinite}
 @media(hover:hover){.mq:hover .mq-track{animation-play-state:paused}}
 .pill{white-space:nowrap;padding:7px 13px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,10,51,.3);color:rgba(255,255,255,.85);background:rgba(255,255,255,.02)}
-.mq-mask{padding:10px 0}
+.mq-mask{padding:26px 0;margin:-16px 0}
+.mq-track{position:relative;z-index:4}
 .pill{display:inline-block;cursor:pointer;user-select:none;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s}
 .pill:hover,.pill.pop{transform:scale(1.22) rotate(-3deg);box-shadow:0 10px 26px -8px rgba(255,10,51,.75);animation:jelly .7s ease both}
 @keyframes jelly{0%{transform:scale(1)}30%{transform:scale(1.3,.85)}45%{transform:scale(.9,1.2)}60%{transform:scale(1.25,.95) rotate(-4deg)}75%{transform:scale(1.18,1.05)}100%{transform:scale(1.22) rotate(-3deg)}}
@@ -324,9 +325,9 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
   opacity:.35;transition:opacity .5s;animation:card-border-spin 5s linear infinite;animation-delay:calc(var(--sd,0) * -.9s)}
 .cover:hover::before,.row:hover::before,.pcard:hover::before,.mq:hover::before{opacity:1;animation-duration:2s}
 @keyframes shine{0%{transform:translateX(-130%)}55%,100%{transform:translateX(130%)}}
-.cover::after,.row::after,.pcard::after,.mq::after,.foot::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+.cover::after,.row::after,.pcard::after,.foot::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
   background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);transform:translateX(-130%)}
-.cover:hover::after,.row:hover::after,.pcard:hover::after,.mq:hover::after,.foot:hover::after{animation:shine 1.8s var(--ease) infinite;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%)}
+.cover:hover::after,.row:hover::after,.pcard:hover::after,.foot:hover::after{animation:shine 1.8s var(--ease) infinite;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%)}
 .foot{position:relative;overflow:hidden;isolation:isolate}
 
 /* ── cursor: bolinha + anel ── */
@@ -463,6 +464,19 @@ html[data-theme="light"] .foot-links a{background:#f5f1ee}
 .foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 .foot-bottom a{transition:color .2s}
 .foot-bottom a:hover{color:var(--red-2)}
+
+/* selo "Disponível": vermelho, brilho passando e animação no hover */
+.status{position:relative;overflow:hidden;isolation:isolate;cursor:default;padding:6px 13px;font-weight:700;font-size:12px;color:#fff;border:1px solid rgba(255,255,255,.22);
+  background:linear-gradient(110deg,#c8001f,#FF0A33 45%,#ff4d6a 55%,#FF0A33 70%,#c8001f);background-size:220% 100%;animation:lbSweep 5s linear infinite;
+  box-shadow:0 8px 24px -10px rgba(255,10,51,.9);transition:transform .45s cubic-bezier(.34,1.56,.64,1),box-shadow .45s}
+.status i{background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.8),0 0 8px #fff;animation:lbPulse 1.8s ease-in-out infinite,dotRing 1.8s ease-out infinite}
+@keyframes dotRing{0%{box-shadow:0 0 0 0 rgba(255,255,255,.75),0 0 8px #fff}100%{box-shadow:0 0 0 8px rgba(255,255,255,0),0 0 8px #fff}}
+.status::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-130%)}
+.status:hover{transform:scale(1.08) rotate(-2deg);box-shadow:0 14px 34px -10px rgba(255,10,51,1)}
+.status:hover::after{animation:shine 1.2s var(--ease) infinite}
+.status:hover span{animation:wave .6s var(--ease)}
+@keyframes wave{40%{letter-spacing:.06em}100%{letter-spacing:0}}
+html[data-theme="light"] .status{color:#fff}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
