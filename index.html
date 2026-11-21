@@ -51,7 +51,6 @@ html[data-theme="light"] .bio em.s{color:var(--text)}
 html[data-theme="light"] .socials a,html[data-theme="light"] .ico-btn,html[data-theme="light"] .lang{background:rgba(255,255,255,.7);color:rgba(20,16,18,.7)}
 html[data-theme="light"] .lang button[aria-pressed="true"]{color:#c8001f}
 html[data-theme="light"] .socials a:hover,html[data-theme="light"] .ico-btn:hover{color:#c8001f}
-html[data-theme="light"] .brand img,html[data-theme="light"] .foot-top img{filter:brightness(0)}
 html[data-theme="light"] .cover{box-shadow:0 10px 30px -18px rgba(20,10,12,.25)}
 html[data-theme="light"] .pill{color:var(--text)}
 html[data-theme="light"] .tag{color:#fff}
@@ -93,6 +92,84 @@ html[data-theme="light"] .theme .moon{display:none}
 .ico-btn{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);transition:color .2s,border-color .2s,background .2s}
 .ico-btn:hover{color:#fff;border-color:rgba(255,10,51,.45);background:rgba(255,10,51,.1)}
 .ico-btn svg{width:15px;height:15px}
+
+/* ── órbita (da versão original) ── */
+@keyframes o-spin-cw{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes o-spin-ccw{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+.orbit{
+  position:relative;
+  width:clamp(280px,84vw,400px);
+  height:clamp(280px,84vw,400px);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:2px;
+}
+
+.orbit-rings-bg{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.orbit-pills-fg{position:absolute;inset:0;pointer-events:none;z-index:2;}
+
+.orbit-ring{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%);}
+.orbit-ring--inner{
+  width:clamp(168px,50vw,264px);height:clamp(168px,50vw,264px);
+  border:1px solid rgba(255,255,255,0.20);
+  box-shadow:0 0 30px rgba(255,10,51,0.06), inset 0 0 30px rgba(255,10,51,0.04);
+  animation:o-spin-cw 20s linear infinite;
+}
+.orbit-ring--inner::before{
+  content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:7px;height:7px;border-radius:50%;background:#FF0A33;
+  box-shadow:0 0 10px 4px rgba(255,10,51,0.75), 0 0 22px 8px rgba(255,10,51,0.35);
+}
+.orbit-ring--outer{
+  width:clamp(244px,73vw,383px);height:clamp(244px,73vw,383px);
+  border:1px solid rgba(255,255,255,0.15);
+  animation:o-spin-ccw 30s linear infinite;
+}
+.orbit-ring--outer::before{
+  content:'';position:absolute;top:-4px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.7);
+  box-shadow:0 0 8px 3px rgba(255,10,51,0.5), 0 0 18px 6px rgba(255,10,51,0.25);
+}
+
+.orbit-spinner{position:absolute;top:50%;left:50%;border-radius:50%;transform:translate(-50%,-50%);}
+.orbit-spinner--inner{width:clamp(168px,50vw,264px);height:clamp(168px,50vw,264px);}
+.orbit-spinner--outer{width:clamp(244px,73vw,383px);height:clamp(244px,73vw,383px);}
+
+.orbit-pill-wrap{
+  position:absolute;top:50%;left:50%;width:0;height:0;
+  transform:rotate(var(--angle)) translateX(var(--r));
+  will-change:transform;
+}
+.orbit-spinner--inner .orbit-pill-wrap{--r:clamp(84px,25vw,132px);}
+.orbit-spinner--outer .orbit-pill-wrap{--r:clamp(122px,36.5vw,191px);}
+.orbit-pill-wrap::before{
+  content:'';position:absolute;left:0;top:0;width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,0.30);transform:translate(-50%,-50%);
+  box-shadow:0 0 6px 2px rgba(255,10,51,0.35);
+}
+.orbit-pill{
+  position:absolute;left:0;top:0;
+  transform:translateX(-50%) translateY(-50%) rotate(calc(-1 * var(--angle)));
+  white-space:nowrap;font-family:var(--sans);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;
+  color:rgba(255,255,255,0.92);background:rgba(8,8,12,0.80);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,10,51,0.35);border-radius:20px;padding:5px 12px;
+  font-size:clamp(9px,2.3vw,11px);
+  box-shadow:0 2px 18px rgba(0,0,0,0.55);
+}
+.orbit-spinner--inner .orbit-pill{border-color:rgba(255,10,51,0.42);box-shadow:0 0 14px -2px rgba(255,10,51,0.4), 0 2px 18px rgba(0,0,0,0.55);}
+.orbit-spinner--outer .orbit-pill{border-color:rgba(255,10,51,0.22);color:rgba(255,255,255,0.78);background:rgba(8,8,12,0.68);box-shadow:0 0 10px -2px rgba(255,10,51,0.25), 0 2px 18px rgba(0,0,0,0.55);}
+.orbit-pill-wrap:nth-child(odd) .orbit-pill{
+  background:#FF0A33;color:#050506;border-color:#FF0A33;
+  box-shadow:0 0 18px rgba(255,10,51,0.55), 0 2px 18px rgba(0,0,0,0.4);
+}
+
+
+.orbit{margin:-30px 0 -14px}
+.orbit .avatar{margin:0;z-index:1;width:clamp(112px,29vw,140px);height:clamp(112px,29vw,140px);animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-6px)}}
+html[data-theme="light"] .orbit-ring--inner{border-color:rgba(20,10,12,.18)}
+html[data-theme="light"] .orbit-ring--outer{border-color:rgba(20,10,12,.12)}
+html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background:rgba(255,255,255,.9);color:#141012}
 
 /* ── perfil ── */
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -162,7 +239,7 @@ html[data-theme="light"] .theme .moon{display:none}
 /* ── lista numerada ── */
 .list{display:flex;flex-direction:column;gap:9px;margin-top:16px}
 .row{display:flex;align-items:center;gap:13px;padding:11px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);transition:border-color .3s,background .3s,transform .3s var(--ease)}
-.row:hover{border-color:rgba(255,10,51,.4);background:var(--panel-2);transform:translateX(3px)}
+.row:hover{border-color:rgba(255,10,51,.4);background:var(--panel-2)}
 .row .num{flex:0 0 40px;height:40px;display:grid;place-items:center;border-radius:11px;color:#fff;background:linear-gradient(145deg,#ff4d6a,#FF0A33 55%,#8B0018);box-shadow:0 8px 20px -10px rgba(255,10,51,.8),inset 0 1px 0 rgba(255,255,255,.25);transition:transform .35s var(--ease)}
 .row .num svg{width:19px;height:19px}
 .row:hover .num{transform:rotate(-6deg) scale(1.06)}
@@ -176,7 +253,7 @@ html[data-theme="light"] .theme .moon{display:none}
 @keyframes nxsMq{100%{transform:translateX(calc(-50% - 5px))}}
 .mq{margin-top:16px;padding:14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
 .mq-track{display:flex;gap:10px;width:max-content;animation:nxsMq 28s linear infinite}
-.mq:hover .mq-track{animation-play-state:paused}
+@media(hover:hover){.mq:hover .mq-track{animation-play-state:paused}}
 .pill{white-space:nowrap;padding:7px 13px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid rgba(255,10,51,.3);color:rgba(255,255,255,.85);background:rgba(255,255,255,.02)}
 .pill:nth-child(odd){background:var(--red);border-color:var(--red);color:#050506}
 .mq-bottom{display:flex;align-items:center;gap:12px;margin-top:14px}
@@ -218,15 +295,18 @@ html[data-theme="light"] .theme .moon{display:none}
 /* ── borda de luz girando + brilho passando (hover) ── */
 @property --ba{syntax:'<angle>';initial-value:0deg;inherits:false}
 @keyframes card-border-spin{to{--ba:360deg}}
-.cover,.row,.pcard,.mq{position:relative;isolation:isolate}
+.cover,.row,.pcard,.mq{position:relative;isolation:isolate;overflow:hidden}
 .cover::before,.row::before,.pcard::before,.mq::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;z-index:3;pointer-events:none;
   background:conic-gradient(from var(--ba),transparent 0deg,transparent 200deg,rgba(255,77,106,.45) 238deg,#FF0A33 265deg,rgba(255,255,255,.92) 270deg,#FF0A33 275deg,rgba(255,77,106,.45) 305deg,transparent 345deg);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
-  opacity:0;transition:opacity .5s}
-.cover:hover::before,.row:hover::before,.pcard:hover::before,.mq:hover::before{opacity:1;animation:card-border-spin 2.2s linear infinite}
-.cover::after,.row::after,.pcard::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.07) 50%,transparent 70%);transform:translateX(-130%);transition:transform .8s var(--ease)}
-.cover:hover::after,.row:hover::after,.pcard:hover::after{transform:translateX(130%)}
+  opacity:.35;transition:opacity .5s;animation:card-border-spin 5s linear infinite;animation-delay:calc(var(--sd,0) * -.9s)}
+.cover:hover::before,.row:hover::before,.pcard:hover::before,.mq:hover::before{opacity:1;animation-duration:2s}
+@keyframes shine{0%{transform:translateX(-130%)}55%,100%{transform:translateX(130%)}}
+.cover::after,.row::after,.pcard::after,.mq::after,.foot::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);transform:translateX(-130%);
+  animation:shine 4.5s var(--ease) infinite;animation-delay:calc(var(--sd,0) * .6s)}
+.cover:hover::after,.row:hover::after,.pcard:hover::after{animation-duration:1.6s;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%)}
+.foot{position:relative;overflow:hidden;isolation:isolate}
 
 /* ── cursor: bolinha + anel ── */
 #cur-dot,#cur-ring{display:none}
@@ -240,11 +320,38 @@ html[data-theme="light"] .theme .moon{display:none}
   #cur-ring.is-hover>i{transform:scale(1.59);border-color:#FF0A33;box-shadow:0 0 22px 8px rgba(255,10,51,.5),inset 0 0 14px 4px rgba(255,10,51,.2)}
   .cur-on #cur-dot,.cur-on #cur-ring{opacity:1}
 }
+
+/* ═════════ ANIMAÇÕES EXTRAS ═════════ */
+.split .ch{display:inline-block;opacity:0;transform:translateY(.55em) rotate(8deg);filter:blur(4px)}
+.in.on .split .ch{animation:chIn .7s var(--ease) both;animation-delay:calc(var(--c)*28ms + 260ms)}
+@keyframes chIn{to{opacity:1;transform:none;filter:none}}
+.sec-h h2{position:relative;padding-bottom:6px}
+.sec-h h2::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;border-radius:2px;background:linear-gradient(90deg,var(--red),transparent);transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease) .2s}
+.sec-h.on h2::after{transform:scaleX(.55)}
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0));transition:transform .5s var(--ease),border-color .35s,box-shadow .35s}
+.tilt.hovering{transition:transform .08s linear,border-color .35s,box-shadow .35s;--ty:-3px}
+.spot{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,10,51,.22),transparent 60%)}
+.tilt.hovering .spot{opacity:1}
+.cover .img img,.pimg img{transform:translateY(var(--py,0)) scale(1.08)}
+.cover:hover .img img,.pcard:hover .pimg img{transform:translateY(var(--py,0)) scale(1.13)}
+.row .num{animation:iconPulse 3.2s ease-in-out infinite;animation-delay:calc(var(--k,0)*.4s)}
+@keyframes iconPulse{0%,100%{box-shadow:0 8px 20px -10px rgba(255,10,51,.8),0 0 0 0 rgba(255,10,51,.45)}50%{box-shadow:0 8px 20px -10px rgba(255,10,51,.8),0 0 0 6px rgba(255,10,51,0)}}
+.row:hover .num svg{animation:wiggle .6s var(--ease)}
+@keyframes wiggle{30%{transform:rotate(-14deg) scale(1.15)}60%{transform:rotate(10deg)}100%{transform:none}}
+.mag{transition:transform .4s var(--ease),translate .4s var(--ease)}
+.btn svg,.row .go svg,.cta .go svg{transition:transform .35s var(--ease)}
+.cover:hover .btn svg{transform:translateX(3px)}
+.sec-h .n{font-variant-numeric:tabular-nums}
+/* modo claro: logos mantêm o vermelho e o branco vira preto */
+html[data-theme="light"] .brand img,html[data-theme="light"] .foot-top img{filter:invert(1) hue-rotate(180deg) saturate(1.4)}
+html[data-theme="light"] .foot .socials a{color:rgba(20,16,18,.75)}
+html[data-theme="light"] .foot-links a{background:#fff}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
+  *:not(.mq-track),*::before,*::after{animation:none!important;transition:none!important}
+  .mq-track{animation-duration:60s!important}
   .js .in{opacity:1}
 }
 </style>
@@ -271,9 +378,29 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
 
   <!-- PERFIL -->
   <section class="hero">
-    <div class="avatar in" style="--d:1"><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
+    <div class="orbit in" style="--d:1">
+    <div class="orbit-rings-bg" aria-hidden="true">
+      <div class="orbit-ring orbit-ring--inner"></div>
+      <div class="orbit-ring orbit-ring--outer"></div>
+    </div>
+    <div class="orbit-pills-fg" aria-hidden="true">
+      <div class="orbit-spinner orbit-spinner--inner">
+        <div class="orbit-pill-wrap" style="--angle:290deg"><span class="orbit-pill" style="--angle:290deg">Logotipo</span></div>
+        <div class="orbit-pill-wrap" style="--angle:15deg"><span class="orbit-pill" style="--angle:15deg">Web Design</span></div>
+        <div class="orbit-pill-wrap" style="--angle:115deg"><span class="orbit-pill" style="--angle:115deg">UI/UX</span></div>
+        <div class="orbit-pill-wrap" style="--angle:195deg"><span class="orbit-pill" style="--angle:195deg">Branding</span></div>
+      </div>
+      <div class="orbit-spinner orbit-spinner--outer">
+        <div class="orbit-pill-wrap" style="--angle:315deg"><span class="orbit-pill" style="--angle:315deg">Identidade Visual</span></div>
+        <div class="orbit-pill-wrap" style="--angle:50deg"><span class="orbit-pill" style="--angle:50deg">Social Media</span></div>
+        <div class="orbit-pill-wrap" style="--angle:145deg"><span class="orbit-pill" style="--angle:145deg">Design Gráfico</span></div>
+        <div class="orbit-pill-wrap" style="--angle:220deg"><span class="orbit-pill" style="--angle:220deg">Lançamentos</span></div>
+      </div>
+    </div>
+    <div class="avatar"><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
+    </div>
     <div class="status in" style="--d:2"><i></i><span data-i18n="status">Disponível para novos projetos</span></div>
-    <h1 class="name in" style="--d:3">Laura Oliveira <span class="bar" aria-hidden="true"></span> <span class="role">Designer</span></h1>
+    <h1 class="name in" style="--d:3" aria-label="Laura Oliveira | Designer"><span class="split" aria-hidden="true">Laura Oliveira</span> <span class="bar" aria-hidden="true"></span> <span class="role split" aria-hidden="true">Designer</span></h1>
     <p class="handle in" style="--d:4">@lauraoliveira.design</p>
     <p class="bio in" style="--d:5" data-i18n="bio">Design &amp; Web design. <em class="s">Vamos</em> elevar o nível do <em class="s">seu negócio?</em></p>
     <nav class="socials in" style="--d:6" aria-label="Redes">
@@ -284,7 +411,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   </section>
 
   <!-- CTA -->
-  <a class="cta in" style="--d:7" href="https://wa.me/5569999086476" target="_blank" rel="noopener">
+  <a class="cta mag in" style="--d:7" href="https://wa.me/5569999086476" target="_blank" rel="noopener">
     <span class="ic"><img src="assets/symbol.webp" alt="" width="22" height="17" style="width:22px;height:auto;filter:brightness(0) invert(1)"></span>
     <span><b data-i18n="cta.t">Solicitar orçamento</b><span data-i18n="cta.s">Sites, landing pages, identidade visual e social media.</span></span>
     <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
@@ -295,20 +422,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     <div class="sec-h in"><h2 data-i18n="links.h">Meus links</h2><span class="n">// 04</span></div>
     <p class="lead in" data-i18n="links.p">Orçamento, estúdio, bastidores e portfólio — tudo em um lugar.</p>
     <div class="covers">
-      <a class="cover hot in" href="https://wa.me/5569999086476" target="_blank" rel="noopener">
-        <div class="img"><img src="assets/card-whatsapp.webp" alt="" width="900" height="434"><span class="tag"><i></i><span data-i18n="tag">Agenda aberta · Resposta rápida</span></span></div>
+      <a class="cover hot tilt in" href="https://wa.me/5569999086476" target="_blank" rel="noopener">
+        <span class="spot"></span><div class="img"><img src="assets/card-whatsapp.webp" alt="" width="900" height="434"><span class="tag"><i></i><span data-i18n="tag">Agenda aberta · Resposta rápida</span></span></div>
         <div class="bar"><div><b data-i18n="c1.t">Orçamento no WhatsApp</b><span data-i18n="c1.s">Tira seu projeto do papel. Respondo rápido.</span></div><span class="btn"><span data-i18n="btn.talk">Chamar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
-      <a class="cover in" href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener">
-        <div class="img"><img src="assets/card-lumem.webp" alt="" width="900" height="433" loading="lazy"></div>
+      <a class="cover tilt in" href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener">
+        <span class="spot"></span><div class="img"><img src="assets/card-lumem.webp" alt="" width="900" height="433" loading="lazy"></div>
         <div class="bar"><div><b>LUMEM Studio</b><span data-i18n="c2.s">Perfil do estúdio no Instagram.</span></div><span class="btn"><span data-i18n="btn.go">Acessar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
-      <a class="cover in" href="https://www.instagram.com/lauraoliveira.design/" target="_blank" rel="noopener">
-        <div class="img"><img src="assets/card-instagram.webp" alt="" width="900" height="434" loading="lazy"></div>
+      <a class="cover tilt in" href="https://www.instagram.com/lauraoliveira.design/" target="_blank" rel="noopener">
+        <span class="spot"></span><div class="img"><img src="assets/card-instagram.webp" alt="" width="900" height="434" loading="lazy"></div>
         <div class="bar"><div><b>Instagram</b><span data-i18n="c3.s">Bastidores e projetos de design no dia a dia.</span></div><span class="btn"><span data-i18n="btn.go">Acessar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
-      <a class="cover in" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener">
-        <div class="img"><img src="assets/card-behance.webp" alt="" width="900" height="433" loading="lazy"></div>
+      <a class="cover tilt in" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener">
+        <span class="spot"></span><div class="img"><img src="assets/card-behance.webp" alt="" width="900" height="433" loading="lazy"></div>
         <div class="bar"><div><b>Behance</b><span data-i18n="c4.s">Meu portfólio completo, projeto por projeto.</span></div><span class="btn"><span data-i18n="btn.go">Acessar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
     </div>
@@ -318,9 +445,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   <section class="sec">
     <div class="sec-h in"><h2 data-i18n="quick.h">Acesso rápido</h2><span class="n">// 03</span></div>
     <div class="list">
-      <a class="row in" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener"><span class="num"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.2 11.2c.9-.4 1.4-1.1 1.4-2.1C9.6 7 8.1 6 6 6H1.5v12H6.2c2.2 0 4-1.1 4-3.4 0-1.5-.8-2.9-2-3.4zM3.7 7.9h2c.8 0 1.6.2 1.6 1.2 0 .9-.6 1.3-1.4 1.3H3.7V7.9zm2.2 8.2H3.7v-3.2h2.3c1 0 1.7.4 1.7 1.6 0 1.1-.8 1.6-1.8 1.6zM18.4 9.1c-2.6 0-4.4 1.9-4.4 4.5 0 2.7 1.7 4.5 4.4 4.5 2 0 3.4-.9 4-2.9h-2.1c-.2.7-1.1 1.1-1.8 1.1-1.4 0-2.2-.8-2.2-2.2h6.2c.1-2.8-1.4-5-4.1-5zm-2.1 3.6c.1-1.1.8-1.8 2-1.8 1.1 0 1.7.6 1.8 1.8h-3.8zM15.6 6.9h5.2v1.3h-5.2z"/></svg></span><div><b data-i18n="q1.t">Portfólio completo</b><span data-i18n="q1.s">Sites, landing pages e identidade visual.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
-      <a class="row in" href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener"><span class="num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><b>LUMEM Studio</b><span data-i18n="q2.s">Conheça o estúdio, os serviços e o processo.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
-      <a class="row in" href="https://wa.me/5569999086476" target="_blank" rel="noopener"><span class="num"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.48-.15-.68.15s-.76.96-.94 1.16c-.17.2-.34.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.34M12.05 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89"/></svg></span><div><b data-i18n="q3.t">Falar comigo</b><span data-i18n="q3.s">Tire dúvidas e peça seu orçamento no WhatsApp.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="row tilt in" style="--k:0" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener"><span class="spot"></span><span class="num"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.2 11.2c.9-.4 1.4-1.1 1.4-2.1C9.6 7 8.1 6 6 6H1.5v12H6.2c2.2 0 4-1.1 4-3.4 0-1.5-.8-2.9-2-3.4zM3.7 7.9h2c.8 0 1.6.2 1.6 1.2 0 .9-.6 1.3-1.4 1.3H3.7V7.9zm2.2 8.2H3.7v-3.2h2.3c1 0 1.7.4 1.7 1.6 0 1.1-.8 1.6-1.8 1.6zM18.4 9.1c-2.6 0-4.4 1.9-4.4 4.5 0 2.7 1.7 4.5 4.4 4.5 2 0 3.4-.9 4-2.9h-2.1c-.2.7-1.1 1.1-1.8 1.1-1.4 0-2.2-.8-2.2-2.2h6.2c.1-2.8-1.4-5-4.1-5zm-2.1 3.6c.1-1.1.8-1.8 2-1.8 1.1 0 1.7.6 1.8 1.8h-3.8zM15.6 6.9h5.2v1.3h-5.2z"/></svg></span><div><b data-i18n="q1.t">Portfólio completo</b><span data-i18n="q1.s">Sites, landing pages e identidade visual.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="row tilt in" style="--k:1" href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener"><span class="spot"></span><span class="num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><b>LUMEM Studio</b><span data-i18n="q2.s">Conheça o estúdio, os serviços e o processo.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="row tilt in" style="--k:2" href="https://wa.me/5569999086476" target="_blank" rel="noopener"><span class="spot"></span><span class="num"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.48-.15-.68.15s-.76.96-.94 1.16c-.17.2-.34.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.34M12.05 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89"/></svg></span><div><b data-i18n="q3.t">Falar comigo</b><span data-i18n="q3.s">Tire dúvidas e peça seu orçamento no WhatsApp.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
     </div>
   </section>
 
@@ -328,10 +455,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   <section class="sec">
     <div class="sec-h in"><h2 data-i18n="port.h">Portfólio</h2><a class="more" href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener" data-i18n="port.more">Ver completo →</a></div>
     <div class="pscroll in">
-      <a class="pcard" href="https://www.behance.net/gallery/244382953/Social-Media-ARQ" target="_blank" rel="noopener"><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/5c2279244382953.Y3JvcCwyMjg4LDE3ODksMCw1.png" alt="Social Media — ARQ" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>Social Media — ARQ</b><span data-i18n="p0">Arquitetura</span></div></a>
-      <a class="pcard" href="https://www.behance.net/gallery/244148755/Social-Media-SAAS" target="_blank" rel="noopener"><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/88d226244148755.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="Social Media — SAAS" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>Social Media — SAAS</b><span data-i18n="p1">Tecnologia</span></div></a>
-      <a class="pcard" href="https://www.behance.net/gallery/233406733/iGaming-Cassino-Design-Social-Midia" target="_blank" rel="noopener"><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/a6ac13233406733.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="iGaming Cassino" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>iGaming Cassino</b><span data-i18n="p2">Social media</span></div></a>
-      <a class="pcard" href="https://www.behance.net/gallery/233668707/Social-Midia-Criativos-Sorveteria-Design" target="_blank" rel="noopener"><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/cd4b88233668707.Y3JvcCwyMzAxLDE4MDAsNTEsMA.png" alt="Criativos Sorveteria" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>Criativos Sorveteria</b><span data-i18n="p3">Criativos</span></div></a>
+<!-- PORTFOLIO:START -->
+      <a class="pcard tilt" href="https://www.behance.net/gallery/244382953/Social-Media-ARQ" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/5c2279244382953.Y3JvcCwyMjg4LDE3ODksMCw1.png" alt="Social Media - ARQ" width="404" height="316" loading="eager" decoding="async"></div><div class="pmeta"><b>Social Media - ARQ</b><span>2026</span></div></a>
+      <a class="pcard tilt" href="https://www.behance.net/gallery/244148755/Social-Media-SAAS" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/88d226244148755.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="Social Media - SAAS" width="404" height="316" loading="eager" decoding="async"></div><div class="pmeta"><b>Social Media - SAAS</b><span>2026</span></div></a>
+      <a class="pcard tilt" href="https://www.behance.net/gallery/233668707/Social-Midia-Criativos-Sorveteria-Design" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/cd4b88233668707.Y3JvcCwyMzAxLDE4MDAsNTEsMA.png" alt="Social Midia | Criativos Sorveteria | Design" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>Social Midia | Criativos Sorveteria | Design</b><span>2025</span></div></a>
+      <a class="pcard tilt" href="https://www.behance.net/gallery/233406733/iGaming-Cassino-Design-Social-Midia" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/a6ac13233406733.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="iGaming Cassino / Design Social Mídia" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>iGaming Cassino / Design Social Mídia</b><span>2025</span></div></a>
+<!-- PORTFOLIO:END -->
     </div>
   </section>
 
@@ -372,7 +501,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       "c1.t":"Orçamento no WhatsApp","c1.s":"Tira seu projeto do papel. Respondo rápido.","c2.s":"Perfil do estúdio no Instagram.","c3.s":"Bastidores e projetos de design no dia a dia.","c4.s":"Meu portfólio completo, projeto por projeto.",
       "btn.talk":"Chamar","btn.go":"Acessar","quick.h":"Acesso rápido",
       "q1.t":"Portfólio completo","q1.s":"Sites, landing pages e identidade visual.","q2.s":"Conheça o estúdio, os serviços e o processo.","q3.t":"Falar comigo","q3.s":"Tire dúvidas e peça seu orçamento no WhatsApp.",
-      "srv.h":"O que eu faço","port.h":"Portfólio","port.more":"Ver completo →",p0:"Arquitetura",p1:"Tecnologia",p2:"Social media",p3:"Criativos",s5:"Identidade Visual",s7:"Design Gráfico",s8:"Lançamentos","srv.t":"Seu projeto é o próximo","srv.s":"Do briefing à entrega, com estratégia e identidade.",
+      "srv.h":"O que eu faço","port.h":"Portfólio","port.more":"Ver completo →",s5:"Identidade Visual",s7:"Design Gráfico",s8:"Lançamentos","srv.t":"Seu projeto é o próximo","srv.s":"Do briefing à entrega, com estratégia e identidade.",
       "foot.p":"Design estratégico para marcas que querem ser escolhidas.","foot.port":"Portfólio",rights:"Todos os direitos reservados",
       theme:"Modo claro / escuro",copied:"Link copiado!",title:"Laura Oliveira | Designer"},
     en:{status:"Available for new projects",bio:'Design &amp; Web design. <em class="s">Shall we</em> take <em class="s">your business</em> to the next level?',
@@ -381,7 +510,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       "c1.t":"Get a quote on WhatsApp","c1.s":"Let's get your project off the ground. I reply fast.","c2.s":"The studio's Instagram profile.","c3.s":"Behind the scenes and daily design work.","c4.s":"My full portfolio, project by project.",
       "btn.talk":"Message","btn.go":"Open","quick.h":"Quick access",
       "q1.t":"Full portfolio","q1.s":"Websites, landing pages and brand identity.","q2.s":"Meet the studio, services and process.","q3.t":"Talk to me","q3.s":"Ask anything and get your quote on WhatsApp.",
-      "srv.h":"What I do","port.h":"Portfolio","port.more":"View all →",p0:"Architecture",p1:"Tech",p2:"Social media",p3:"Ad creatives",s5:"Brand Identity",s7:"Graphic Design",s8:"Launches","srv.t":"Your project is next","srv.s":"From briefing to delivery, with strategy and identity.",
+      "srv.h":"What I do","port.h":"Portfolio","port.more":"View all →",s5:"Brand Identity",s7:"Graphic Design",s8:"Launches","srv.t":"Your project is next","srv.s":"From briefing to delivery, with strategy and identity.",
       "foot.p":"Strategic design for brands that want to be chosen.","foot.port":"Portfolio",rights:"All rights reserved",
       theme:"Light / dark mode",copied:"Link copied!",title:"Laura Oliveira | Designer"}
   };
@@ -493,9 +622,72 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   function idle(fn){ ('requestIdleCallback' in window) ? requestIdleCallback(fn,{timeout:800}) : setTimeout(fn,200); }
   if(document.readyState==='complete') idle(startGL); else window.addEventListener('load',function(){ idle(startGL); });
 
+  /* ── órbita: pílulas grudadas nos anéis ── */
+  (function(){
+    if(reduce) return;
+    var inner=[].slice.call(document.querySelectorAll('.orbit-spinner--inner .orbit-pill-wrap'));
+    var outer=[].slice.call(document.querySelectorAll('.orbit-spinner--outer .orbit-pill-wrap'));
+    function prep(w){ return { w:w, p:w.querySelector('.orbit-pill'), a:parseFloat(w.style.getPropertyValue('--angle'))||0 }; }
+    inner=inner.map(prep); outer=outer.map(prep);
+    var iS=document.querySelector('.orbit-spinner--inner'), oS=document.querySelector('.orbit-spinner--outer');
+    var innerR=0, outerR=0;
+    function measure(){ innerR=iS.offsetWidth/2; outerR=oS.offsetWidth/2; }
+    measure(); window.addEventListener('resize',measure);
+    var start=0, raf=0, last=0, STEP=1000/30, visible=true;
+    function place(list,r,delta){
+      for(var i=0;i<list.length;i++){
+        var o=list[i], a=o.a+delta;
+        o.w.style.transform='rotate('+a+'deg) translateX('+r+'px)';
+        o.p.style.transform='translate(-50%,-50%) rotate('+(-a)+'deg)';
+      }
+    }
+    function frame(ts){
+      raf=requestAnimationFrame(frame);
+      if(ts-last<STEP) return; last=ts;
+      if(!start) start=ts;
+      var el=ts-start;
+      place(inner,innerR,(el/20000)*360);
+      place(outer,outerR,-(el/30000)*360);
+    }
+    function run(){ if(!raf && visible && !document.hidden) raf=requestAnimationFrame(frame); }
+    function stop(){ cancelAnimationFrame(raf); raf=0; }
+    document.addEventListener('visibilitychange',function(){ document.hidden?stop():run(); });
+    /* pausa quando a órbita sai da tela (rolando os cards) */
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(en){ visible=en[0].isIntersecting; visible?run():stop(); })
+        .observe(document.querySelector('.orbit'));
+    }
+    run();
+  })();
+
+
+  document.querySelectorAll('.split').forEach(function(el){var i=0;el.innerHTML=el.textContent.split('').map(function(c){return c===' '?' ':'<span class="ch" style="--c:'+(i++)+'">'+c+'</span>';}).join('');});
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if(fine && !reduce){
+    document.querySelectorAll('.tilt').forEach(function(el){
+      var max=el.classList.contains('row')?3:6;
+      el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+        el.classList.add('hovering');el.style.setProperty('--ry',((x-.5)*max)+'deg');el.style.setProperty('--rx',((.5-y)*max)+'deg');
+        el.style.setProperty('--mx',(x*100)+'%');el.style.setProperty('--my',(y*100)+'%');});
+      el.addEventListener('pointerleave',function(){el.classList.remove('hovering');el.style.setProperty('--rx','0deg');el.style.setProperty('--ry','0deg');});
+    });
+    document.querySelectorAll('.mag,.socials a,.ico-btn,.lang button').forEach(function(el){
+      el.classList.add('mag');
+      el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect(),k=el.classList.contains('cta')?.05:.28;
+        el.style.translate=((e.clientX-r.left-r.width/2)*k)+'px '+((e.clientY-r.top-r.height/2)*k)+'px';});
+      el.addEventListener('pointerleave',function(){el.style.translate='0 0';});
+    });
+  }
+  if(!reduce){
+    var pimgs=[].slice.call(document.querySelectorAll('.cover .img img,.pimg img')), pq=false;
+    function par(){pq=false;var vh=innerHeight;pimgs.forEach(function(im){var r=im.parentNode.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=((r.top+r.height/2)-vh/2)/vh;im.style.setProperty('--py',(p*-14)+'px');});}
+    window.addEventListener('scroll',function(){if(!pq){pq=true;requestAnimationFrame(par);}},{passive:true}); par();
+  }
+  function scramble(el){var fin=el.textContent,n=0,ch='0123456789/';var t=setInterval(function(){el.textContent=fin.split('').map(function(c,i){return (c===' '||i<n)?c:ch[Math.floor(Math.random()*ch.length)];}).join('');if(++n>fin.length){clearInterval(t);el.textContent=fin;}},55);}
+  [].slice.call(document.querySelectorAll('.cover,.row,.pcard,.mq,.foot')).forEach(function(e,i){e.style.setProperty('--sd',i%7);});
   var els=[].slice.call(document.querySelectorAll(".in"));
   if("IntersectionObserver" in window){
-    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add("on");io.unobserve(x.target);}});},{rootMargin:"0px 0px -6% 0px"});
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add("on");var nn=x.target.querySelector&&x.target.querySelector(".n");if(nn&&!reduce)scramble(nn);io.unobserve(x.target);}});},{rootMargin:"0px 0px -6% 0px"});
     els.forEach(function(e){io.observe(e);});
   } else els.forEach(function(e){e.classList.add("on");});
 })();
