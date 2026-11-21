@@ -194,6 +194,9 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 .name{font-size:clamp(27px,7.4vw,34px);font-weight:800;letter-spacing:-.035em;line-height:1.05;display:flex;align-items:center;gap:10px}
 .name .bar{width:1.5px;height:.9em;background:var(--line-2)}
 .name .role{font-weight:500;color:rgba(255,255,255,.82)}
+.name{flex-wrap:wrap;justify-content:center;row-gap:2px}
+.role.typing::after{content:"";display:inline-block;width:2px;height:.85em;margin-left:3px;vertical-align:-.08em;background:var(--red);animation:caret .8s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
 .handle{color:var(--red-2);font-size:13.5px;font-weight:600;margin-top:6px}
 .bio{color:var(--muted);font-size:14px;line-height:1.55;margin-top:12px;max-width:400px;text-wrap:balance}
 .bio em.s{color:#fff}
@@ -680,6 +683,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     window.addEventListener('pointerup',function(){ if(!down) return; down=false;
       var v=-vx*16; (function glide(){ if(Math.abs(v)<.4){sc.classList.remove('dragging');return;} sc.scrollLeft+=v; v*=.94; raf=requestAnimationFrame(glide);})();});
     sc.addEventListener('click',function(e){ if(moved){e.preventDefault();e.stopPropagation();moved=false;} },true);
+  })();
+  /* cargo trocando no nome (efeito de digitação) + título da aba */
+  (function(){
+    var ROLES={pt:["Designer","Web Designer","UI/UX","Identidade Visual","Lançamentos"],en:["Designer","Web Designer","UI/UX","Brand Identity","Launches"]};
+    var el=document.querySelector('.name .role'), i=0, t=0;
+    function typeTo(word,done){ var cur=el.textContent;
+      (function del(){ if(cur.length){cur=cur.slice(0,-1);el.textContent=cur;t=setTimeout(del,45);} else (function add(k){ el.textContent=word.slice(0,k); if(k<word.length) t=setTimeout(function(){add(k+1);},85); else done(); })(1); })(); }
+    function next(){ var list=ROLES[cur]||ROLES.pt; i=(i+1)%list.length; var w=list[i];
+      typeTo(w,function(){ document.title='Laura Oliveira | '+w; t=setTimeout(next,2200); }); }
+    if(reduce) return;
+    setTimeout(function(){ el.textContent=el.textContent; el.classList.add('typing'); t=setTimeout(next,1600); },1400);
   })();
   document.getElementById("y").textContent=new Date().getFullYear();
 
