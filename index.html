@@ -298,6 +298,12 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 .sec-h a.more:hover{color:var(--red-2)}
 .pscroll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:16px -18px 0;padding:2px 18px 8px;scrollbar-width:none}
 .pscroll::-webkit-scrollbar{display:none}
+.pscroll.dragging{scroll-snap-type:none;scroll-behavior:auto}
+.pscroll.dragging .pcard{pointer-events:none}
+.pscroll img{-webkit-user-drag:none;user-select:none}
+#cur-ring>b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.6);opacity:0;font:800 9px/1 var(--sans);letter-spacing:.12em;color:#fff;white-space:nowrap;transition:.25s var(--ease)}
+#cur-ring.is-drag>i{transform:scale(2.3);background:rgba(255,10,51,.85);border-color:#FF0A33}
+#cur-ring.is-drag>b{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .pcard{flex:0 0 74%;scroll-snap-align:start;border-radius:16px;overflow:hidden;background:var(--panel);border:1px solid var(--line)}
 .pimg{aspect-ratio:404/316;overflow:hidden;background:#0a0a0c}
 .pimg img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
@@ -373,7 +379,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
 <script>document.documentElement.className="js";try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 </head>
 <body>
-<div id="cur-dot" aria-hidden="true"></div><div id="cur-ring" aria-hidden="true"><i></i></div>
+<div id="cur-dot" aria-hidden="true"></div><div id="cur-ring" aria-hidden="true"><i></i><b id="cur-lbl">ARRASTE</b></div>
 <div class="bg" aria-hidden="true"></div>
 <canvas class="bglines" aria-hidden="true"></canvas>
 
@@ -553,6 +559,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   mq.addEventListener('pointerover',function(e){var p=e.target.closest('.pill');if(p&&e.pointerType==='mouse'&&!reduce)burst(p);});
   mq.addEventListener('click',function(e){var p=e.target.closest('.pill');if(!p)return;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop');if(!reduce)burst(p);
     mq.style.animationPlayState='paused';clearTimeout(mq._t);mq._t=setTimeout(function(){p.classList.remove('pop');mq.style.animationPlayState='';},1200);});
+  /* portfólio: arrastar com o mouse (com inércia) */
+  (function(){
+    var sc=document.querySelector('.pscroll'); if(!sc) return;
+    var down=false,moved=false,sx=0,sl=0,vx=0,lx=0,lt=0,raf=0;
+    sc.addEventListener('pointerdown',function(e){ if(e.pointerType!=='mouse') return; down=true;moved=false;sx=e.clientX;sl=sc.scrollLeft;lx=e.clientX;lt=performance.now();vx=0;cancelAnimationFrame(raf);});
+    window.addEventListener('pointermove',function(e){ if(!down) return; var dx=e.clientX-sx; if(Math.abs(dx)>4){moved=true;sc.classList.add('dragging');}
+      sc.scrollLeft=sl-dx; var now=performance.now(); vx=(e.clientX-lx)/Math.max(1,now-lt); lx=e.clientX; lt=now;});
+    window.addEventListener('pointerup',function(){ if(!down) return; down=false;
+      var v=-vx*16; (function glide(){ if(Math.abs(v)<.4){sc.classList.remove('dragging');return;} sc.scrollLeft+=v; v*=.94; raf=requestAnimationFrame(glide);})();});
+    sc.addEventListener('click',function(e){ if(moved){e.preventDefault();e.stopPropagation();moved=false;} },true);
+    var ring=document.getElementById('cur-ring'), lbl=document.getElementById('cur-lbl');
+    sc.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse'){lbl.textContent=cur==='en'?'DRAG':'ARRASTE';ring.classList.add('is-drag');}});
+    sc.addEventListener('pointerleave',function(){ring.classList.remove('is-drag');});
+  })();
   document.getElementById("y").textContent=new Date().getFullYear();
 
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
