@@ -174,9 +174,17 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 /* ── perfil ── */
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center}
 .avatar{position:relative;width:112px;height:112px;margin-bottom:18px;animation:float 6s ease-in-out infinite}
-.avatar::before{content:"";position:absolute;inset:-4px;border-radius:50%;
-  background:conic-gradient(from 0deg,var(--red),#ff6680,var(--red),var(--red-deep),var(--red));animation:spin 6s linear infinite}
-.avatar::after{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,10,51,.35),transparent);z-index:-1}
+.avatar::before{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px dashed rgba(255,77,106,.55);animation:spin 14s linear infinite}
+.avatar .ring{position:absolute;inset:-4px;border-radius:50%;padding:3px;
+  background:conic-gradient(from var(--ra),#8B0018 0deg,#FF0A33 120deg,#ff6680 200deg,#fff 232deg,#FF0A33 250deg,#8B0018 300deg,#8B0018 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  animation:ringSpin 2.6s linear infinite;filter:drop-shadow(0 0 6px rgba(255,10,51,.8))}
+.avatar .ring::after{content:"";position:absolute;inset:-6px;border-radius:50%;background:conic-gradient(from var(--ra),transparent 200deg,rgba(255,255,255,.9) 232deg,transparent 260deg);
+  -webkit-mask:radial-gradient(closest-side,transparent calc(100% - 4px),#000 calc(100% - 3px),transparent);mask:radial-gradient(closest-side,transparent calc(100% - 4px),#000 calc(100% - 3px),transparent);filter:blur(3px);animation:ringSpin 2.6s linear infinite}
+@property --ra{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes ringSpin{to{--ra:360deg}}
+.avatar::after{content:"";position:absolute;inset:-18px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,10,51,.35),transparent);z-index:-1;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.45;transform:scale(1.08)}}
 .avatar img{position:relative;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center 18%;border:3px solid var(--bg);background:linear-gradient(150deg,var(--red),var(--red-deep))}
 @keyframes spin{to{transform:rotate(360deg)}}
 .status{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11.5px;color:var(--muted);margin-bottom:14px}
@@ -385,7 +393,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
 
   <!-- PERFIL -->
   <section class="hero">
-    <div class="avatar in" style="--d:1"><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
+    <div class="avatar in" style="--d:1"><span class="ring" aria-hidden="true"></span><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
     <div class="status in" style="--d:2"><i></i><span data-i18n="status">Disponível para novos projetos</span></div>
     <h1 class="name in" style="--d:3" aria-label="Laura Oliveira | Designer"><span class="split" aria-hidden="true">Laura Oliveira</span> <span class="bar" aria-hidden="true"></span> <span class="role split" aria-hidden="true">Designer</span></h1>
     <p class="handle in" style="--d:4">@lauraoliveira.design</p>
@@ -393,6 +401,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     <nav class="socials in" style="--d:6" aria-label="Redes">
       <a href="https://www.instagram.com/lauraoliveira.design/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
       <a href="https://wa.me/5569999086476" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.28-.1-.48-.15-.68.15s-.76.96-.94 1.16c-.17.2-.34.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.53.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.25-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.34M12.05 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.88 9.89"/></svg></a>
+      <a href="mailto:laura1525cristina@gmail.com" aria-label="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></a>
       <a href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.2 11.2c.9-.4 1.4-1.1 1.4-2.1C9.6 7 8.1 6 6 6H1.5v12H6.2c2.2 0 4-1.1 4-3.4 0-1.5-.8-2.9-2-3.4zM3.7 7.9h2c.8 0 1.6.2 1.6 1.2 0 .9-.6 1.3-1.4 1.3H3.7V7.9zm2.2 8.2H3.7v-3.2h2.3c1 0 1.7.4 1.7 1.6 0 1.1-.8 1.6-1.8 1.6zM18.4 9.1c-2.6 0-4.4 1.9-4.4 4.5 0 2.7 1.7 4.5 4.4 4.5 2 0 3.4-.9 4-2.9h-2.1c-.2.7-1.1 1.1-1.8 1.1-1.4 0-2.2-.8-2.2-2.2h6.2c.1-2.8-1.4-5-4.1-5zm-2.1 3.6c.1-1.1.8-1.8 2-1.8 1.1 0 1.7.6 1.8 1.8h-3.8zM15.6 6.9h5.2v1.3h-5.2z"/></svg></a>
     </nav>
   </section>
