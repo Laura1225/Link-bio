@@ -8,7 +8,8 @@
 <meta name="theme-color" content="#050506" />
 <meta name="color-scheme" content="dark light" />
 <link rel="canonical" href="https://bio.lauraoliveiradesigner.com.br/" />
-<link rel="icon" href="assets/favicon.png" type="image/png" />
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192" />
+<link rel="icon" href="assets/favicon.png" type="image/png" sizes="64x64" />
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Laura Oliveira | Designer" />
@@ -301,9 +302,6 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 .pscroll.dragging{scroll-snap-type:none;scroll-behavior:auto}
 .pscroll.dragging .pcard{pointer-events:none}
 .pscroll img{-webkit-user-drag:none;user-select:none}
-#cur-ring>b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.6);opacity:0;font:800 9px/1 var(--sans);letter-spacing:.12em;color:#fff;white-space:nowrap;transition:.25s var(--ease)}
-#cur-ring.is-drag>i{transform:scale(2.3);background:rgba(255,10,51,.85);border-color:#FF0A33}
-#cur-ring.is-drag>b{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .pcard{flex:0 0 74%;scroll-snap-align:start;border-radius:16px;overflow:hidden;background:var(--panel);border:1px solid var(--line)}
 .pimg{aspect-ratio:404/316;overflow:hidden;background:#0a0a0c}
 .pimg img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
@@ -458,7 +456,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
 <script>document.documentElement.className="js";try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 </head>
 <body>
-<div id="cur-dot" aria-hidden="true"></div><div id="cur-ring" aria-hidden="true"><i></i><b id="cur-lbl">ARRASTE</b></div>
+<div id="cur-dot" aria-hidden="true"></div><div id="cur-ring" aria-hidden="true"><i></i></div>
 <div class="bg" aria-hidden="true"></div>
 <canvas class="bglines" aria-hidden="true"></canvas>
 
@@ -682,9 +680,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     window.addEventListener('pointerup',function(){ if(!down) return; down=false;
       var v=-vx*16; (function glide(){ if(Math.abs(v)<.4){sc.classList.remove('dragging');return;} sc.scrollLeft+=v; v*=.94; raf=requestAnimationFrame(glide);})();});
     sc.addEventListener('click',function(e){ if(moved){e.preventDefault();e.stopPropagation();moved=false;} },true);
-    var ring=document.getElementById('cur-ring'), lbl=document.getElementById('cur-lbl');
-    sc.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse'){lbl.textContent=cur==='en'?'DRAG':'ARRASTE';ring.classList.add('is-drag');}});
-    sc.addEventListener('pointerleave',function(){ring.classList.remove('is-drag');});
   })();
   document.getElementById("y").textContent=new Date().getFullYear();
 
