@@ -478,6 +478,9 @@ html{overflow-x:clip}
   .scene{cursor:default}
   .scene .sc-txt{padding-top:70px}
 }
+/* pílulas legíveis por cima da imagem (claro e escuro) */
+.mq.open .pill:not(:nth-child(odd)):not(:hover):not(.pop){background:rgba(5,5,6,.78)!important;color:#fff!important;border-color:rgba(255,255,255,.28)!important;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.mq.open .pill:nth-child(odd){color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
