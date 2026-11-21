@@ -194,7 +194,7 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 .name{font-size:clamp(27px,7.4vw,34px);font-weight:800;letter-spacing:-.035em;line-height:1.05;display:flex;align-items:center;gap:10px}
 .name .bar{width:1.5px;height:.9em;background:var(--line-2)}
 .name .role{font-weight:500;color:rgba(255,255,255,.82)}
-.name{flex-wrap:wrap;justify-content:center;row-gap:2px}
+.name{justify-content:center}
 .role.typing::after{content:"";display:inline-block;width:2px;height:.85em;margin-left:3px;vertical-align:-.08em;background:var(--red);animation:caret .8s steps(1) infinite}
 @keyframes caret{50%{opacity:0}}
 .handle{color:var(--red-2);font-size:13.5px;font-weight:600;margin-top:6px}
@@ -478,6 +478,29 @@ html[data-theme="light"] .foot-links a{background:#f5f1ee}
 .status:hover span{animation:wave .6s var(--ease)}
 @keyframes wave{40%{letter-spacing:.06em}100%{letter-spacing:0}}
 html[data-theme="light"] .status{color:#fff}
+
+/* ═════════ CELULAR: leve e sem travar ═════════ */
+html{overflow-x:clip}
+@media (hover:none),(pointer:coarse),(max-width:767px){
+  .bglines{display:none}
+  .bg{background:radial-gradient(70% 45% at 50% -5%,var(--glow),transparent 70%),radial-gradient(60% 40% at 90% 30%,rgba(255,10,51,.12),transparent 70%),radial-gradient(60% 40% at 0% 70%,rgba(255,10,51,.1),transparent 70%)}
+  .js .in.on{animation-name:lbInM}
+  .cover::before,.row::before,.pcard::before,.mq::before{animation:none;opacity:.5;background:linear-gradient(135deg,rgba(255,10,51,.6),transparent 40%,transparent 60%,rgba(255,77,106,.5))}
+  .tilt,.tilt.hovering{transform:none!important;transition:none}
+  .spot{display:none}
+  .cover .img img,.pimg img,.cover:hover .img img,.pcard:hover .pimg img{transform:none!important}
+  .socials a,.ico-btn,.lang,.tag,.orbit-pill{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .cover:hover,.row:hover,.pcard:hover{box-shadow:none}
+  .cover.hot{animation:none;box-shadow:0 18px 40px -22px rgba(255,10,51,.9)}
+  .js .cover.hot.in.on{animation:lbInM .7s var(--ease) both}
+  .avatar .ring::after{display:none}
+  .avatar .ring{filter:none}
+  .cta{animation:lbSweep 6s linear infinite}
+  .pscroll{scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+}
+.name{flex-wrap:nowrap;white-space:nowrap}
+@media(max-width:480px){.name{font-size:clamp(21px,6.6vw,27px);gap:8px}.name .role{font-size:.72em}}
+@keyframes lbInM{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:none}}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
@@ -797,7 +820,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     });
   }
   function idle(fn){ ('requestIdleCallback' in window) ? requestIdleCallback(fn,{timeout:800}) : setTimeout(fn,200); }
-  if(document.readyState==='complete') idle(startGL); else window.addEventListener('load',function(){ idle(startGL); });
+  var touch=window.matchMedia('(hover:none),(pointer:coarse),(max-width:767px)').matches;
+  if(!touch) if(document.readyState==='complete') idle(startGL); else window.addEventListener('load',function(){ idle(startGL); });
 
   document.querySelectorAll('.split').forEach(function(el){var i=0;el.innerHTML=el.textContent.split('').map(function(c){return c===' '?' ':'<span class="ch" style="--c:'+(i++)+'">'+c+'</span>';}).join('');});
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -816,7 +840,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       el.addEventListener('pointerleave',function(){el.style.translate='0 0';});
     });
   }
-  if(!reduce){
+  if(!reduce && !touch){
     var pimgs=[].slice.call(document.querySelectorAll('.cover .img img,.pimg img')), pq=false;
     function par(){pq=false;var vh=innerHeight;pimgs.forEach(function(im){var r=im.parentNode.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=((r.top+r.height/2)-vh/2)/vh;im.style.setProperty('--py',(p*-14)+'px');});}
     window.addEventListener('scroll',function(){if(!pq){pq=true;requestAnimationFrame(par);}},{passive:true}); par();
