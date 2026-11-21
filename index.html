@@ -447,6 +447,22 @@ html[data-theme="light"] .sc-paper,html[data-theme="light"] .sc-win{fill:#fff}
 .stars circle{animation:tw 1.6s ease-in-out infinite alternate}
 .stars circle:nth-child(2n){animation-delay:.8s}
 @keyframes tw{to{opacity:.2}}
+
+/* rodapé no formato da referência */
+.foot{padding:22px 22px 18px;border-radius:22px}
+.foot-top img{height:16px}
+.foot p{font-size:13.5px;line-height:1.6;margin-top:14px;max-width:300px}
+.foot .socials{gap:9px}
+.foot .socials a{width:42px;height:42px;border-radius:12px}
+.foot .socials svg{width:18px;height:18px}
+.foot-links{gap:9px;margin-top:20px}
+.foot-links a{padding:14px 15px;border-radius:12px;border:1px solid transparent;background:var(--panel-2);font-size:13.5px}
+html[data-theme="light"] .foot-links a{background:#f5f1ee}
+.foot-links a:hover{border-color:rgba(255,10,51,.45)}
+.foot-links svg{width:12px;height:12px;color:var(--text)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.foot-bottom a{transition:color .2s}
+.foot-bottom a:hover{color:var(--red-2)}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
@@ -571,8 +587,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       <a href="https://www.instagram.com/lumemstudio.dsgn/" target="_blank" rel="noopener">LUMEM Studio <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
       <a href="https://www.behance.net/lauracristina34" target="_blank" rel="noopener"><span data-i18n="foot.port">Portfólio</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
     </div>
+    <div class="foot-bottom"><span>© <span id="y">2026</span> Laura Oliveira · LUMEM</span><a href="mailto:laura1525cristina@gmail.com">laura1525cristina@gmail.com</a></div>
   </footer>
-  <p class="copy">© <span id="y">2026</span> Laura Oliveira · <span data-i18n="rights">Todos os direitos reservados</span></p>
 </main>
 
 <script>
