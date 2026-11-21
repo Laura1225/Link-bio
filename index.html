@@ -368,6 +368,84 @@ html[data-theme="light"] .logo-d{display:none}
 html[data-theme="light"] .logo-l{display:block}
 html[data-theme="light"] .foot .socials a{color:rgba(20,16,18,.75)}
 html[data-theme="light"] .foot-links a{background:#fff}
+
+/* ── cena animada do serviço (abre por cima do quadro) ── */
+.mq{transition:min-height .5s var(--ease)}
+.mq.open{min-height:250px}
+.scene{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px;border-radius:inherit;
+  background:radial-gradient(120% 90% at var(--ox,50%) var(--oy,50%),rgba(255,10,51,.18),transparent 60%),var(--panel);
+  clip-path:circle(0 at var(--ox,50%) var(--oy,50%));transition:clip-path .6s var(--ease);cursor:pointer;color:var(--text)}
+.scene.on{clip-path:circle(150% at var(--ox,50%) var(--oy,50%))}
+.scene .x{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:9px;border:1px solid var(--line);font-size:18px;line-height:1;color:var(--muted)}
+.stage{width:100%;max-width:300px}
+.stage svg{width:100%;height:auto;display:block;overflow:visible}
+.sc-txt{text-align:center}
+.sc-txt b{display:block;font-size:15px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:var(--red-2)}
+.sc-txt span{display:block;font-size:12.5px;color:var(--muted)}
+.scene.on .sc-txt{animation:lbIn .6s var(--ease) .3s both}
+.sc-paper{fill:rgba(255,255,255,.06);stroke:var(--line-2)}
+.sc-win{fill:rgba(255,255,255,.05);stroke:var(--line-2)}
+.sc-blk,.scr{fill:rgba(255,255,255,.12)}
+html[data-theme="light"] .sc-blk,html[data-theme="light"] .scr{fill:rgba(20,10,12,.1)}
+html[data-theme="light"] .sc-paper,html[data-theme="light"] .sc-win{fill:#fff}
+/* logotipo */
+.draw{stroke-dasharray:200;stroke-dashoffset:200;animation:draw 2.4s var(--ease) .2s infinite}
+.draw.d2{animation-delay:1s}
+@keyframes draw{60%,100%{stroke-dashoffset:0}}
+.pen{animation:pen 2.4s var(--ease) .2s infinite}
+@keyframes pen{0%{transform:translate(98px,35px)}30%{transform:translate(98px,92px)}55%{transform:translate(148px,92px)}75%{transform:translate(140px,45px)}100%{transform:translate(98px,35px)}}
+/* web */
+.bld rect{transform-box:fill-box;transform-origin:left;animation:pop 4s var(--ease) infinite}
+.b1{animation-delay:.2s!important}.b2{animation-delay:.6s!important}.b3{animation-delay:.9s!important}.b4{animation-delay:1.2s!important}.b5{animation-delay:1.5s!important}.b6{animation-delay:1.7s!important}
+@keyframes pop{0%{transform:scaleX(0);opacity:0}12%{transform:scaleX(1);opacity:1}85%{opacity:1}100%{opacity:0}}
+.cur{animation:cur 4s var(--ease) infinite}
+@keyframes cur{0%{transform:translate(200px,120px)}25%{transform:translate(70px,45px)}45%{transform:translate(120px,88px)}65%{transform:translate(174px,88px)}100%{transform:translate(200px,120px)}}
+.clk{opacity:0;transform-box:fill-box;transform-origin:center;animation:clk 4s infinite}
+@keyframes clk{25%,45%,65%{opacity:0;transform:scale(.3)}28%,48%,68%{opacity:1;transform:scale(1)}33%,53%,73%{opacity:0;transform:scale(1.6)}}
+/* ui/ux */
+.slide{animation:slide 3s var(--ease) infinite}
+@keyframes slide{0%,30%{transform:translateY(0)}50%,80%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+.tap{transform-box:fill-box;transform-origin:center;animation:tap 3s infinite}
+.ripple{transform-box:fill-box;transform-origin:center;animation:rip 3s infinite}
+@keyframes tap{0%,35%{opacity:0}40%{opacity:.9;transform:scale(.8)}50%{opacity:0;transform:scale(1)}100%{opacity:0}}
+@keyframes rip{0%,40%{opacity:0;transform:scale(1)}45%{opacity:.8}70%{opacity:0;transform:scale(3.5)}100%{opacity:0}}
+/* branding */
+.sw rect{transform-box:fill-box;transform-origin:bottom;animation:sw 3s var(--ease) infinite}
+.s2{animation-delay:.15s!important}.s3{animation-delay:.3s!important}.s4{animation-delay:.45s!important}
+@keyframes sw{0%{transform:scaleY(0)}20%,80%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.aa{animation:aa 3s ease-in-out infinite}
+@keyframes aa{0%,15%{opacity:0}30%,80%{opacity:1}100%{opacity:0}}
+/* identidade */
+.flip{transform-box:fill-box;transform-origin:center;animation:flip 3s var(--ease) infinite}
+@keyframes flip{0%{transform:perspective(300px) rotateY(0)}40%,60%{transform:perspective(300px) rotateY(180deg)}100%{transform:perspective(300px) rotateY(360deg)}}
+.tagl{transform-box:fill-box;transform-origin:center;animation:sw2 3s ease-in-out infinite}
+@keyframes sw2{50%{transform:scaleX(.4)}}
+/* social */
+.feed{animation:feed 4s linear infinite}
+@keyframes feed{to{transform:translateY(-92px)}}
+.ht{transform-box:fill-box;transform-origin:center;animation:ht 2.4s ease-out infinite;opacity:0}
+.h2{animation-delay:.8s}.h3{animation-delay:1.5s}
+@keyframes ht{0%{opacity:0;transform:translateY(10px) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.2)}}
+/* design gráfico: bonequinho digitando */
+.head{animation:bob .6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(2px)}}
+.a1{animation:type .25s ease-in-out infinite alternate}
+.a2{animation:type .25s ease-in-out .12s infinite alternate}
+@keyframes type{to{transform:translateY(-3px)}}
+.typ rect{transform-box:fill-box;transform-origin:left;animation:pop 3s steps(6) infinite}
+.typ rect:nth-child(2){animation-delay:.5s}.typ rect:nth-child(3){animation-delay:1s}.typ rect:nth-child(4){animation-delay:1.5s}
+.scr{animation:glow 1.5s ease-in-out infinite}
+@keyframes glow{50%{fill:rgba(255,10,51,.18)}}
+/* lançamentos */
+.rocket{animation:rocket 3s var(--ease) infinite}
+@keyframes rocket{0%{transform:translateY(8px)}10%{transform:translate(1px,6px)}20%{transform:translate(-1px,8px)}60%{transform:translateY(-90px);opacity:1}61%{opacity:0;transform:translateY(-90px)}62%{transform:translateY(40px)}100%{transform:translateY(8px);opacity:1}}
+.flame{transform-box:fill-box;transform-origin:top;animation:flame .15s ease-in-out infinite alternate}
+@keyframes flame{to{transform:scaleY(1.35)}}
+.smoke circle{transform-box:fill-box;transform-origin:center;animation:smoke 3s ease-out infinite}
+@keyframes smoke{0%,10%{transform:scale(.3);opacity:0}25%{opacity:1}60%{transform:scale(1.8);opacity:0}100%{opacity:0}}
+.stars circle{animation:tw 1.6s ease-in-out infinite alternate}
+.stars circle:nth-child(2n){animation-delay:.8s}
+@keyframes tw{to{opacity:.2}}
 a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offset:3px}
 
 @media(hover:none){.cover:hover,.row:hover,.socials a:hover{transform:none}}
@@ -472,8 +550,9 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     <div class="sec-h in"><h2 data-i18n="srv.h">O que eu faço</h2><span class="n">// 08</span></div>
     <div class="mq in">
       <div class="mq-mask"><div class="mq-track" id="mq">
-        <span class="pill">Logotipo</span><span class="pill">Web Design</span><span class="pill">UI/UX</span><span class="pill">Branding</span><span class="pill" data-i18n="s5">Identidade Visual</span><span class="pill">Social Media</span><span class="pill" data-i18n="s7">Design Gráfico</span><span class="pill" data-i18n="s8">Lançamentos</span>
+        <span class="pill" data-k="0">Logotipo</span><span class="pill" data-k="1">Web Design</span><span class="pill" data-k="2">UI/UX</span><span class="pill" data-k="3">Branding</span><span class="pill" data-k="4" data-i18n="s5">Identidade Visual</span><span class="pill" data-k="5">Social Media</span><span class="pill" data-k="6" data-i18n="s7">Design Gráfico</span><span class="pill" data-k="7" data-i18n="s8">Lançamentos</span>
       </div></div>
+      <div class="scene" id="scene" hidden><button class="x" type="button" aria-label="Fechar">×</button><div class="stage"></div><div class="sc-txt"><b></b><span></span></div></div>
       <a class="mq-bottom" href="https://wa.me/5569999086476" target="_blank" rel="noopener"><div><b data-i18n="srv.t">Seu projeto é o próximo</b><span data-i18n="srv.s">Do briefing à entrega, com estratégia e identidade.</span></div><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
     </div>
   </section>
@@ -552,6 +631,39 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     document.addEventListener('pointerover',function(e){ring.classList.toggle('is-hover',!!e.target.closest('a,button'));});
     document.addEventListener('mouseleave',function(){root.classList.remove('cur-on');});
   }
+  /* ── cenas animadas de cada serviço ── */
+  var R='#FF0A33',R2='#ff4d6a',D='#8B0018';
+  var SC=[
+   /* 0 Logotipo: o L sendo desenhado pela caneta */
+   '<svg viewBox="0 0 240 130"><rect x="60" y="10" width="120" height="110" rx="12" class="sc-paper"/><path class="draw" d="M98 35 L98 92 L148 92" fill="none" stroke="'+R+'" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path class="draw d2" d="M110 80 L140 45" fill="none" stroke="'+R2+'" stroke-width="6" stroke-linecap="round"/><g class="pen"><path d="M0 0 l10 -26 l8 3 l-10 26z" fill="#fff"/><path d="M0 0 l2 -5 l3 1z" fill="'+R+'"/></g></svg>',
+   /* 1 Web Design: site sendo montado + cursor clicando */
+   '<svg viewBox="0 0 240 130"><rect x="30" y="8" width="180" height="114" rx="10" class="sc-win"/><rect x="30" y="8" width="180" height="16" rx="10" fill="'+D+'"/><circle cx="42" cy="16" r="3" fill="#fff" opacity=".7"/><circle cx="52" cy="16" r="3" fill="#fff" opacity=".5"/><g class="bld"><rect class="b1" x="42" y="32" width="156" height="30" rx="5" fill="'+R+'"/><rect class="b2" x="42" y="68" width="48" height="40" rx="5" fill="'+R2+'"/><rect class="b3" x="96" y="68" width="48" height="40" rx="5" class="sc-blk"/><rect class="b4" x="150" y="68" width="48" height="40" rx="5" fill="'+R2+'"/><rect class="b5" x="54" y="42" width="70" height="6" rx="3" fill="#fff"/><rect class="b6" x="54" y="52" width="44" height="5" rx="2.5" fill="#fff" opacity=".7"/></g><g class="cur"><path d="M0 0 L0 16 L4 12 L7 19 L10 18 L7 11 L12 11 Z" fill="#fff" stroke="#111" stroke-width="1"/><circle class="clk" r="9" fill="none" stroke="#fff" stroke-width="2"/></g></svg>',
+   /* 2 UI/UX: celular com telas deslizando + toque */
+   '<svg viewBox="0 0 240 130"><rect x="88" y="4" width="64" height="122" rx="12" class="sc-win"/><g class="slide"><rect x="96" y="18" width="48" height="26" rx="6" fill="'+R+'"/><rect x="96" y="50" width="48" height="14" rx="4" class="sc-blk"/><rect x="96" y="70" width="48" height="14" rx="4" class="sc-blk"/><rect x="96" y="90" width="48" height="26" rx="6" fill="'+R2+'"/></g><circle class="tap" cx="120" cy="77" r="6" fill="#fff"/><circle class="ripple" cx="120" cy="77" r="6" fill="none" stroke="#fff" stroke-width="2"/></svg>',
+   /* 3 Branding: amostras de cor + Aa */
+   '<svg viewBox="0 0 240 130"><g class="sw"><rect class="s1" x="40" y="30" width="40" height="70" rx="8" fill="'+R+'"/><rect class="s2" x="86" y="30" width="40" height="70" rx="8" fill="'+D+'"/><rect class="s3" x="132" y="30" width="40" height="70" rx="8" fill="#f5f1ee"/><rect class="s4" x="178" y="30" width="22" height="70" rx="8" class="sc-blk"/></g><text class="aa" x="120" y="122" text-anchor="middle" font-family="Lora,serif" font-style="italic" font-weight="700" font-size="20" fill="currentColor">Aa</text></svg>',
+   /* 4 Identidade Visual: cartão girando com a marca */
+   '<svg viewBox="0 0 240 130"><g class="flip"><rect x="60" y="25" width="120" height="76" rx="10" fill="'+R+'"/><path d="M104 46 L104 80 L136 80" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g><rect class="tagl" x="80" y="110" width="80" height="6" rx="3" fill="currentColor" opacity=".35"/></svg>',
+   /* 5 Social Media: feed rolando + corações subindo */
+   '<svg viewBox="0 0 240 130"><rect x="88" y="4" width="64" height="122" rx="12" class="sc-win"/><clipPath id="cp5"><rect x="92" y="10" width="56" height="110" rx="8"/></clipPath><g clip-path="url(#cp5)"><g class="feed"><rect x="96" y="14" width="48" height="40" rx="5" fill="'+R+'"/><rect x="96" y="60" width="48" height="40" rx="5" fill="'+R2+'"/><rect x="96" y="106" width="48" height="40" rx="5" fill="'+D+'"/><rect x="96" y="152" width="48" height="40" rx="5" fill="'+R+'"/></g></g><g fill="'+R+'"><path class="ht h1" d="M170 90c-6-6-12-2-10 4 2 5 10 10 10 10s8-5 10-10c2-6-4-10-10-4z"/><path class="ht h2" d="M190 100c-5-5-10-2-8 3 2 4 8 8 8 8s6-4 8-8c2-5-3-8-8-3z"/><path class="ht h3" d="M62 96c-5-5-10-2-8 3 2 4 8 8 8 8s6-4 8-8c2-5-3-8-8-3z"/></g></svg>',
+   /* 6 Design Gráfico: bonequinho digitando no computador */
+   '<svg viewBox="0 0 240 130"><rect x="20" y="112" width="200" height="6" rx="3" fill="currentColor" opacity=".25"/><rect x="118" y="44" width="80" height="56" rx="6" fill="'+D+'"/><rect x="123" y="49" width="70" height="44" rx="3" class="scr"/><g class="typ"><rect x="128" y="55" width="40" height="4" rx="2" fill="'+R+'"/><rect x="128" y="63" width="54" height="4" rx="2" fill="#fff" opacity=".8"/><rect x="128" y="71" width="30" height="4" rx="2" fill="'+R2+'"/><rect x="128" y="79" width="46" height="4" rx="2" fill="#fff" opacity=".6"/></g><rect x="150" y="100" width="16" height="12" fill="'+D+'"/><rect x="112" y="106" width="70" height="6" rx="2" fill="currentColor" opacity=".5"/><g class="guy"><circle class="head" cx="74" cy="46" r="13" fill="#f2c7a5"/><path d="M61 44a13 13 0 0 1 26 -2c-6-6-18-6-26 2z" fill="#3a1d14"/><path d="M58 112 L60 70 a14 14 0 0 1 28 0 L92 112z" fill="'+R+'"/><path class="arm a1" d="M84 76 L112 98" stroke="#f2c7a5" stroke-width="7" stroke-linecap="round"/><path class="arm a2" d="M80 82 L110 104" stroke="#e9b896" stroke-width="7" stroke-linecap="round"/></g></svg>',
+   /* 7 Lançamentos: foguete decolando */
+   '<svg viewBox="0 0 240 130"><g class="stars" fill="currentColor"><circle cx="40" cy="20" r="1.6"/><circle cx="200" cy="30" r="1.8"/><circle cx="70" cy="60" r="1.2"/><circle cx="180" cy="80" r="1.4"/><circle cx="210" cy="104" r="1.2"/><circle cx="30" cy="96" r="1.6"/></g><g class="rocket"><path d="M120 18c14 12 18 34 14 58h-28c-4-24 0-46 14-58z" fill="#f5f1ee"/><circle cx="120" cy="46" r="7" fill="'+R+'"/><path d="M106 70 l-12 14 l14 -2z M134 70 l12 14 l-14 -2z" fill="'+R+'"/><path class="flame" d="M110 78 q10 34 10 34 q0 0 10 -34z" fill="'+R2+'"/></g><g class="smoke" fill="currentColor" opacity=".25"><circle cx="104" cy="118" r="9"/><circle cx="120" cy="122" r="11"/><circle cx="138" cy="118" r="9"/></g></svg>'
+  ];
+  var DESC={pt:["Logos marcantes, desenhadas do zero.","Sites que vendem, do layout ao ar.","Interfaces bonitas e fáceis de usar.","Uma marca com cara, cor e voz.","Sua marca coerente em todo lugar.","Conteúdo que para o scroll e engaja.","Peças gráficas que comunicam com estilo.","Lançamentos com visual que converte."],
+            en:["Striking logos, drawn from scratch.","Websites that sell, from layout to launch.","Beautiful interfaces that are easy to use.","A brand with its own look, color and voice.","Your brand consistent everywhere.","Content that stops the scroll and engages.","Graphic pieces that communicate with style.","Launches with visuals that convert."]};
+  var box=document.querySelector('.mq'), scene=document.getElementById('scene'), stage=scene.querySelector('.stage'), sT=scene.querySelector('b'), sD=scene.querySelector('span'), st=0;
+  function openScene(p){
+    var k=+p.dataset.k, br=box.getBoundingClientRect(), pr=p.getBoundingClientRect();
+    scene.style.setProperty('--ox',(pr.left+pr.width/2-br.left)+'px'); scene.style.setProperty('--oy',(pr.top+pr.height/2-br.top)+'px');
+    stage.innerHTML=SC[k]; sT.textContent=p.textContent; sD.textContent=DESC[cur][k];
+    box.classList.add('open'); scene.removeAttribute('hidden'); requestAnimationFrame(function(){scene.classList.add('on');});
+    clearTimeout(st); st=setTimeout(closeScene,6500);
+  }
+  function closeScene(){ scene.classList.remove('on'); box.classList.remove('open'); clearTimeout(st); setTimeout(function(){ if(!scene.classList.contains('on')) scene.setAttribute('hidden',''); },600); }
+  scene.querySelector('.x').addEventListener('click',function(e){e.stopPropagation();closeScene();});
+  scene.addEventListener('click',closeScene);
   /* pílulas do "O que eu faço": faíscas ao passar o mouse ou tocar */
   function burst(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
     for(var i=0;i<12;i++){var d=document.createElement('i'),a=Math.random()*6.283,v=26+Math.random()*34;d.className='spark'+(i%3?'':' w');
@@ -559,7 +671,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       document.body.appendChild(d);setTimeout(function(n){n.remove();},750,d);}}
   mq.addEventListener('pointerover',function(e){var p=e.target.closest('.pill');if(p&&e.pointerType==='mouse'&&!reduce)burst(p);});
   mq.addEventListener('click',function(e){var p=e.target.closest('.pill');if(!p)return;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop');if(!reduce)burst(p);
-    mq.style.animationPlayState='paused';clearTimeout(mq._t);mq._t=setTimeout(function(){p.classList.remove('pop');mq.style.animationPlayState='';},1200);});
+    setTimeout(function(){p.classList.remove('pop');},700); openScene(p);});
   /* portfólio: arrastar com o mouse (com inércia) */
   (function(){
     var sc=document.querySelector('.pscroll'); if(!sc) return;
