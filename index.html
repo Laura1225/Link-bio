@@ -173,7 +173,7 @@ html[data-theme="light"] .orbit-pill-wrap:nth-child(even) .orbit-pill{background
 
 /* ── perfil ── */
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center}
-.avatar{position:relative;width:104px;height:104px;margin-bottom:16px}
+.avatar{position:relative;width:112px;height:112px;margin-bottom:18px;animation:float 6s ease-in-out infinite}
 .avatar::before{content:"";position:absolute;inset:-4px;border-radius:50%;
   background:conic-gradient(from 0deg,var(--red),#ff6680,var(--red),var(--red-deep),var(--red));animation:spin 6s linear infinite}
 .avatar::after{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,10,51,.35),transparent);z-index:-1}
@@ -385,27 +385,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
 
   <!-- PERFIL -->
   <section class="hero">
-    <div class="orbit in" style="--d:1">
-    <div class="orbit-rings-bg" aria-hidden="true">
-      <div class="orbit-ring orbit-ring--inner"></div>
-      <div class="orbit-ring orbit-ring--outer"></div>
-    </div>
-    <div class="orbit-pills-fg" aria-hidden="true">
-      <div class="orbit-spinner orbit-spinner--inner">
-        <div class="orbit-pill-wrap" style="--angle:290deg"><span class="orbit-pill" style="--angle:290deg">Logotipo</span></div>
-        <div class="orbit-pill-wrap" style="--angle:15deg"><span class="orbit-pill" style="--angle:15deg">Web Design</span></div>
-        <div class="orbit-pill-wrap" style="--angle:115deg"><span class="orbit-pill" style="--angle:115deg">UI/UX</span></div>
-        <div class="orbit-pill-wrap" style="--angle:195deg"><span class="orbit-pill" style="--angle:195deg">Branding</span></div>
-      </div>
-      <div class="orbit-spinner orbit-spinner--outer">
-        <div class="orbit-pill-wrap" style="--angle:315deg"><span class="orbit-pill" style="--angle:315deg">Identidade Visual</span></div>
-        <div class="orbit-pill-wrap" style="--angle:50deg"><span class="orbit-pill" style="--angle:50deg">Social Media</span></div>
-        <div class="orbit-pill-wrap" style="--angle:145deg"><span class="orbit-pill" style="--angle:145deg">Design Gráfico</span></div>
-        <div class="orbit-pill-wrap" style="--angle:220deg"><span class="orbit-pill" style="--angle:220deg">Lançamentos</span></div>
-      </div>
-    </div>
-    <div class="avatar"><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
-    </div>
+    <div class="avatar in" style="--d:1"><img src="assets/laura.webp" alt="Laura Oliveira" width="320" height="320" fetchpriority="high"></div>
     <div class="status in" style="--d:2"><i></i><span data-i18n="status">Disponível para novos projetos</span></div>
     <h1 class="name in" style="--d:3" aria-label="Laura Oliveira | Designer"><span class="split" aria-hidden="true">Laura Oliveira</span> <span class="bar" aria-hidden="true"></span> <span class="role split" aria-hidden="true">Designer</span></h1>
     <p class="handle in" style="--d:4">@lauraoliveira.design</p>
@@ -636,45 +616,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   }
   function idle(fn){ ('requestIdleCallback' in window) ? requestIdleCallback(fn,{timeout:800}) : setTimeout(fn,200); }
   if(document.readyState==='complete') idle(startGL); else window.addEventListener('load',function(){ idle(startGL); });
-
-  /* ── órbita: pílulas grudadas nos anéis ── */
-  (function(){
-    if(reduce) return;
-    var inner=[].slice.call(document.querySelectorAll('.orbit-spinner--inner .orbit-pill-wrap'));
-    var outer=[].slice.call(document.querySelectorAll('.orbit-spinner--outer .orbit-pill-wrap'));
-    function prep(w){ return { w:w, p:w.querySelector('.orbit-pill'), a:parseFloat(w.style.getPropertyValue('--angle'))||0 }; }
-    inner=inner.map(prep); outer=outer.map(prep);
-    var iS=document.querySelector('.orbit-spinner--inner'), oS=document.querySelector('.orbit-spinner--outer');
-    var innerR=0, outerR=0;
-    function measure(){ innerR=iS.offsetWidth/2; outerR=oS.offsetWidth/2; }
-    measure(); window.addEventListener('resize',measure);
-    var start=0, raf=0, last=0, STEP=1000/30, visible=true;
-    function place(list,r,delta){
-      for(var i=0;i<list.length;i++){
-        var o=list[i], a=o.a+delta;
-        o.w.style.transform='rotate('+a+'deg) translateX('+r+'px)';
-        o.p.style.transform='translate(-50%,-50%) rotate('+(-a)+'deg)';
-      }
-    }
-    function frame(ts){
-      raf=requestAnimationFrame(frame);
-      if(ts-last<STEP) return; last=ts;
-      if(!start) start=ts;
-      var el=ts-start;
-      place(inner,innerR,(el/20000)*360);
-      place(outer,outerR,-(el/30000)*360);
-    }
-    function run(){ if(!raf && visible && !document.hidden) raf=requestAnimationFrame(frame); }
-    function stop(){ cancelAnimationFrame(raf); raf=0; }
-    document.addEventListener('visibilitychange',function(){ document.hidden?stop():run(); });
-    /* pausa quando a órbita sai da tela (rolando os cards) */
-    if('IntersectionObserver' in window){
-      new IntersectionObserver(function(en){ visible=en[0].isIntersecting; visible?run():stop(); })
-        .observe(document.querySelector('.orbit'));
-    }
-    run();
-  })();
-
 
   document.querySelectorAll('.split').forEach(function(el){var i=0;el.innerHTML=el.textContent.split('').map(function(c){return c===' '?' ':'<span class="ch" style="--c:'+(i++)+'">'+c+'</span>';}).join('');});
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
