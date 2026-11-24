@@ -1,7 +1,7 @@
 name: Atualizar portfólio do Behance
 on:
   schedule:
-    - cron: "17 */3 * * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -9,10 +9,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
       - run: node scripts/update-portfolio.mjs
       - name: Publicar se mudou
         run: |

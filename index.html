@@ -575,7 +575,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       <a class="pcard tilt" href="https://www.behance.net/gallery/244382953/Social-Media-ARQ" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/5c2279244382953.Y3JvcCwyMjg4LDE3ODksMCw1.png" alt="Social Media - ARQ" width="404" height="316" loading="eager" decoding="async"></div><div class="pmeta"><b>Social Media - ARQ</b><span>2026</span></div></a>
       <a class="pcard tilt" href="https://www.behance.net/gallery/244148755/Social-Media-SAAS" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/88d226244148755.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="Social Media - SAAS" width="404" height="316" loading="eager" decoding="async"></div><div class="pmeta"><b>Social Media - SAAS</b><span>2026</span></div></a>
       <a class="pcard tilt" href="https://www.behance.net/gallery/233668707/Social-Midia-Criativos-Sorveteria-Design" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/cd4b88233668707.Y3JvcCwyMzAxLDE4MDAsNTEsMA.png" alt="Social Midia | Criativos Sorveteria | Design" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>Social Midia | Criativos Sorveteria | Design</b><span>2025</span></div></a>
-      <a class="pcard tilt" href="https://www.behance.net/gallery/233406733/iGaming-Cassino-Design-Social-Midia" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="https://mir-s3-cdn-cf.behance.net/projects/max_808_webp/a6ac13233406733.Y3JvcCwxMTUwLDkwMCwyNSww.png" alt="iGaming Cassino / Design Social Mídia" width="404" height="316" loading="lazy" decoding="async"></div><div class="pmeta"><b>iGaming Cassino / Design Social Mídia</b><span>2025</span></div></a>
 <!-- PORTFOLIO:END -->
     </div>
   </section>
@@ -720,6 +719,32 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
     if(reduce) return;
     setTimeout(function(){ el.textContent=el.textContent; el.classList.add('typing'); t=setTimeout(next,1600); },1400);
   })();
+  /* ── Portfólio ao vivo: lê o Behance a cada visita (projeto novo entra em 1º, privado some) ── */
+  (function(){
+    var box=document.querySelector('.pscroll'); if(!box) return;
+    var FEED='https://www.behance.net/feeds/user?username=lauracristina34';
+    var API='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(FEED)+'&_='+Math.floor(Date.now()/600000);
+    var esc=function(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');};
+    function render(items){
+      var html=items.map(function(p,i){return '<a class="pcard tilt" href="'+esc(p.link)+'" target="_blank" rel="noopener"><span class="spot"></span><div class="pimg"><img src="'+esc(p.img)+'" alt="'+esc(p.title)+'" width="404" height="316" loading="'+(i<2?'eager':'lazy')+'" decoding="async"></div><div class="pmeta"><b>'+esc(p.title)+'</b><span>'+p.year+'</span></div></a>';}).join('');
+      var cur=[].map.call(box.querySelectorAll('.pcard'),function(a){return a.getAttribute('href');}).join('|');
+      var nxt=items.map(function(p){return p.link;}).join('|');
+      if(cur===nxt) return;
+      box.innerHTML=html;
+      if(window.__bindTilt) box.querySelectorAll('.tilt').forEach(window.__bindTilt);
+      box.querySelectorAll('.pcard').forEach(function(e,i){e.style.setProperty('--sd',i%7);});
+    }
+    var ctl=('AbortController' in window)?new AbortController():null; if(ctl) setTimeout(function(){ctl.abort();},8000);
+    fetch(API,ctl?{signal:ctl.signal}:{}).then(function(r){return r.json();}).then(function(j){
+      if(!j||j.status!=='ok'||!j.items) return;
+      var items=j.items.map(function(it){
+        var m=(it.description||'').match(/src=['"]([^'"]+)['"]/); var img=(it.thumbnail||(m&&m[1])||'').replace('/projects/404/','/projects/max_808_webp/');
+        var d=new Date((it.pubDate||'').replace(' ','T')+'Z');
+        return {title:it.title,link:(it.link||'').split('?')[0],img:img,date:d,year:isNaN(d)?'':d.getUTCFullYear()};
+      }).filter(function(p){return p.link&&p.img;}).sort(function(a,b){return b.date-a.date;}).slice(0,8);
+      if(items.length) render(items);
+    }).catch(function(){});
+  })();
   document.getElementById("y").textContent=new Date().getFullYear();
 
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -797,13 +822,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
   document.querySelectorAll('.split').forEach(function(el){var i=0;el.innerHTML=el.textContent.split('').map(function(c){return c===' '?' ':'<span class="ch" style="--c:'+(i++)+'">'+c+'</span>';}).join('');});
   var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
   if(fine && !reduce){
-    document.querySelectorAll('.tilt').forEach(function(el){
+    window.__bindTilt=function(el){
       var max=el.classList.contains('row')?3:6;
       el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
         el.classList.add('hovering');el.style.setProperty('--ry',((x-.5)*max)+'deg');el.style.setProperty('--rx',((.5-y)*max)+'deg');
         el.style.setProperty('--mx',(x*100)+'%');el.style.setProperty('--my',(y*100)+'%');});
       el.addEventListener('pointerleave',function(){el.classList.remove('hovering');el.style.setProperty('--rx','0deg');el.style.setProperty('--ry','0deg');});
-    });
+    };
+    document.querySelectorAll('.tilt').forEach(window.__bindTilt);
     document.querySelectorAll('.mag,.socials a,.ico-btn,.lang button').forEach(function(el){
       el.classList.add('mag');
       el.addEventListener('pointermove',function(e){var r=el.getBoundingClientRect(),k=el.classList.contains('cta')?.05:.28;
