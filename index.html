@@ -734,15 +734,17 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--red-2);outline-offs
       if(window.__bindTilt) box.querySelectorAll('.tilt').forEach(window.__bindTilt);
       box.querySelectorAll('.pcard').forEach(function(e,i){e.style.setProperty('--sd',i%7);});
     }
-    var ctl=('AbortController' in window)?new AbortController():null; if(ctl) setTimeout(function(){ctl.abort();},8000);
-    fetch(API,ctl?{signal:ctl.signal}:{}).then(function(r){return r.json();}).then(function(j){
-      if(!j||j.status!=='ok'||!j.items) return;
-      var items=j.items.map(function(it){
-        var m=(it.description||'').match(/src=['"]([^'"]+)['"]/); var img=(it.thumbnail||(m&&m[1])||'').replace('/projects/404/','/projects/max_808_webp/');
-        var d=new Date((it.pubDate||'').replace(' ','T')+'Z');
-        return {title:it.title,link:(it.link||'').split('?')[0],img:img,date:d,year:isNaN(d)?'':d.getUTCFullYear()};
-      }).filter(function(p){return p.link&&p.img;}).sort(function(a,b){return b.date-a.date;}).slice(0,8);
-      if(items.length) render(items);
+    function norm(list){ return list.map(function(p){ var d=new Date(p.date); return {title:p.title,link:(p.link||'').split('?')[0],img:(p.img||'').replace('/projects/404/','/projects/max_808_webp/'),date:d,year:isNaN(d)?'':d.getUTCFullYear()}; })
+      .filter(function(p){return p.link&&p.img;}).sort(function(a,b){return b.date-a.date;}).slice(0,8); }
+    function get(url){ var c=('AbortController' in window)?new AbortController():null; if(c) setTimeout(function(){c.abort();},7000); return fetch(url,c?{signal:c.signal,cache:'no-store'}:{cache:'no-store'}).then(function(r){return r.json();}); }
+    /* 1º: conector próprio (Vercel, sem cache longo) · 2º: rss2json (reserva) */
+    get('https://behance-bio.vercel.app/api/behance?t='+Date.now()).then(function(j){
+      if(!j||!j.ok||!j.items||!j.items.length) throw 0; render(norm(j.items));
+    }).catch(function(){
+      return get(API).then(function(j){
+        if(!j||j.status!=='ok'||!j.items) return;
+        render(norm(j.items.map(function(it){ var m=(it.description||'').match(/src=['"]([^'"]+)['"]/); return {title:it.title,link:it.link,img:it.thumbnail||(m&&m[1])||'',date:(it.pubDate||'').replace(' ','T')+'Z'}; })));
+      });
     }).catch(function(){});
   })();
   document.getElementById("y").textContent=new Date().getFullYear();
