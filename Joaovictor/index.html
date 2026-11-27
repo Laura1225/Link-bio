@@ -65,7 +65,7 @@ em{font-style:normal;color:var(--red)}
 /* HERO */
 .hero{position:relative;height:100svh;min-height:620px;overflow:hidden;background:#000}
 .art{position:absolute;inset:0;width:100%;height:100%;will-change:transform}
-.art svg{width:100%;height:100%;display:block}
+.art .fb,.art canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.art .fb{object-fit:cover}.art canvas{opacity:0;transition:opacity .6s}.art canvas.on{opacity:1}
 .hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 22%,transparent 70%,rgba(0,0,0,.7));z-index:2}
 .side{position:absolute;z-index:3;top:50%;width:min(34vw,680px)}
 .side.l{left:max(5vw,16px);transform:translateY(-48%)}
@@ -214,15 +214,8 @@ em{font-style:normal;color:var(--red)}
 <main>
 <section class="hero" id="inicio">
   <div class="art" id="art">
-    <svg id="svg" viewBox="0 0 1920 1347" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1347">
-          <ellipse id="lens" cx="1010" cy="520" rx="0" ry="0" fill="#fff"/>
-        </mask>
-      </defs>
-      <image href="/Joaovictor/img/hero-cima.webp" width="1920" height="1347"/>
-      <image href="/Joaovictor/img/hero-baixo.webp" width="1920" height="1347" mask="url(#m)"/>
-    </svg>
+    <img class="fb" src="/Joaovictor/img/hero-cima.webp" alt="João Victor" width="1920" height="1347">
+    <canvas id="gl" aria-hidden="true"></canvas>
   </div>
 
   <div class="side l">
@@ -337,31 +330,67 @@ if(fine){addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;dot.style.
  (function loop(){cx+=(mx-cx)*.18;cy+=(my-cy)*.18;cur.style.transform=`translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;requestAnimationFrame(loop)})();
  $$('a,button,.card,.dep').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('big'));el.addEventListener('mouseleave',()=>cur.classList.remove('big'))});}
 
-/* HERO: revelação orgânica que segue o cursor */
-const svg=$('#svg'),hero=$('#inicio'),NS='http://www.w3.org/2000/svg';
-const lens=$('#lens');
-let tx=1010,ty=520,x=1010,y=520,R=0,tR=0,ang=-8,sx=1,inside=false,lastMove=0,auto=!fine,t0=performance.now(),px=x,py=y;
-const toSvg=(cx,cy)=>{const p=svg.createSVGPoint();p.x=cx;p.y=cy;return p.matrixTransform(svg.getScreenCTM().inverse())};
-const BASE=()=>innerWidth<900?150:170;
-hero.addEventListener('pointermove',e=>{const p=toSvg(e.clientX,e.clientY);tx=p.x;ty=p.y;inside=true;auto=false;lastMove=performance.now();tR=BASE()});
-hero.addEventListener('pointerleave',()=>{inside=false;tR=0});
-hero.addEventListener('pointerdown',e=>{const p=toSvg(e.clientX,e.clientY);tx=p.x;ty=p.y;auto=false;lastMove=performance.now();tR=BASE()});
-let heroVis=true;new IntersectionObserver(([e])=>heroVis=e.isIntersecting).observe(hero);
-setTimeout(()=>{if(!inside)tR=BASE()},700);
-setTimeout(()=>{if(!inside&&fine)tR=0},2600);
-(function tick(now){
-  requestAnimationFrame(tick);
-  if(!heroVis)return;
-  if(!fine&&now-lastMove>2500)auto=true;
-  if(auto){const t=(now-t0)/1000;tx=990+Math.sin(t*.8)*260;ty=560+Math.sin(t*1.3)*150;tR=BASE()}
-  x+=(tx-x)*.16;y+=(ty-y)*.16;R+=(tR-R)*.12;
-  const vx=x-px,vy=y-py;px=x;py=y;
-  const sp=Math.min(Math.hypot(vx,vy),60);
-  ang+=((-8+Math.max(-28,Math.min(28,vy*1.4-vx*.25)))-ang)*.12;
-  sx+=((1+sp/120)-sx)*.15;
-  lens.setAttribute('rx',Math.max(0,R*2.15*sx));lens.setAttribute('ry',Math.max(0,R/Math.sqrt(sx)));
-  lens.setAttribute('transform',`rotate(${ang} ${x} ${y})`);lens.setAttribute('cx',x);lens.setAttribute('cy',y);
-})(performance.now());
+/* HERO: revelação líquida (WebGL) que segue o rastro do mouse */
+const hero=$('#inicio'),cv=$('#gl');
+const gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:false,alpha:false});
+if(gl){
+  const tr=document.createElement('canvas'),tc=tr.getContext('2d');
+  const vs='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+  const fs=`precision highp float;varying vec2 v;uniform sampler2D a,b,m;uniform vec2 r;uniform float t,ar;
+  float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+  float fb(vec2 p){return n(p)*.55+n(p*2.1+3.7)*.3+n(p*4.3+9.1)*.15;}
+  void main(){
+    vec2 u=v,q=v;float c=r.x/r.y;
+    if(c>ar){u.y=(u.y-.5)*(ar/c)+.5;}else{u.x=(u.x-.5)*(c/ar)+.5;}
+    vec2 sp=vec2(q.x*c,q.y)*3.2;
+    vec2 w=vec2(fb(sp+t*.18),fb(sp+5.2-t*.15))-.5;
+    float k=texture2D(m,vec2(q.x,1.-q.y)+w*.035).r;
+    float e=k+(fb(sp*1.7+t*.25)-.5)*.55;
+    float s=smoothstep(.36,.39,e);
+    vec2 uu=vec2(u.x,1.-u.y);
+    gl_FragColor=vec4(mix(texture2D(a,uu).rgb,texture2D(b,uu).rgb,s),1.);
+  }`;
+  const sh=(ty,src)=>{const o=gl.createShader(ty);gl.shaderSource(o,src);gl.compileShader(o);return o};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+  const bf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const pl=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(pl);gl.vertexAttribPointer(pl,2,gl.FLOAT,false,0,0);
+  const U=k=>gl.getUniformLocation(pr,k);
+  const tex=(unit,src)=>{const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);
+    [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T].forEach(x=>gl.texParameteri(gl.TEXTURE_2D,x,gl.CLAMP_TO_EDGE));
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    if(src)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src);return t};
+  const load=u=>new Promise(r=>{const i=new Image();i.decoding='async';i.onload=()=>r(i);i.src=u});
+  gl.uniform1i(U('a'),0);gl.uniform1i(U('b'),1);gl.uniform1i(U('m'),2);gl.uniform1f(U('ar'),1920/1347);
+  let ok=false,W=0,H=0,TW=0,TH=0;
+  const size=()=>{const d=Math.min(devicePixelRatio||1,2);W=cv.width=Math.round(hero.clientWidth*d);H=cv.height=Math.round(hero.clientHeight*d);gl.viewport(0,0,W,H);gl.uniform2f(U('r'),W,H);
+    TW=tr.width=Math.max(64,Math.round(hero.clientWidth/4));TH=tr.height=Math.max(64,Math.round(hero.clientHeight/4));tc.fillStyle='#000';tc.fillRect(0,0,TW,TH)};
+  size();new ResizeObserver(size).observe(hero);
+  Promise.all([load($('.fb').currentSrc||'/Joaovictor/img/hero-cima.webp'),load('/Joaovictor/img/hero-baixo.webp')]).then(([A,B])=>{tex(0,A);tex(1,B);tex(2,tr);ok=true;cv.classList.add('on')});
+  /* pincel: segue o mouse com suavização e pinta o rastro */
+  let mx=-1,my=-1,bx=-1,by=-1,lastMove=0,auto=!fine,t0=performance.now(),vis=true;
+  new IntersectionObserver(([e])=>vis=e.isIntersecting).observe(hero);
+  const pt=e=>{const r=hero.getBoundingClientRect();mx=(e.clientX-r.left)/r.width;my=(e.clientY-r.top)/r.height;if(bx<0){bx=mx;by=my}auto=false;lastMove=performance.now()};
+  hero.addEventListener('pointermove',pt,{passive:true});hero.addEventListener('pointerdown',pt,{passive:true});
+  hero.addEventListener('pointerleave',()=>{mx=-1;bx=-1});
+  const dab=(x,y,rad,al)=>{const g=tc.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,`rgba(255,255,255,${.9*al})`);g.addColorStop(.55,`rgba(255,255,255,${.55*al})`);g.addColorStop(1,'rgba(255,255,255,0)');tc.fillStyle=g;tc.beginPath();tc.arc(x,y,rad,0,7);tc.fill()};
+  (function loop(now){
+    requestAnimationFrame(loop);if(!vis||!ok)return;
+    if(!fine&&now-lastMove>2200)auto=true;
+    if(auto){const t=(now-t0)/1000;mx=.5+Math.sin(t*.9)*.16;my=.45+Math.sin(t*1.4)*.12;if(bx<0){bx=mx;by=my}}
+    tc.globalCompositeOperation='source-over';tc.fillStyle='rgba(0,0,0,.045)';tc.fillRect(0,0,TW,TH);
+    if(mx>=0){
+      const nx=bx+(mx-bx)*.22,ny=by+(my-by)*.22,dx=(nx-bx)*TW,dy=(ny-by)*TH,d=Math.hypot(dx,dy);
+      const rad=Math.min(TW,TH)*(innerWidth<900?.16:.12)*(1+Math.min(d,30)/40);
+      tc.globalCompositeOperation='lighter';
+      const st=Math.max(1,Math.ceil(d/(rad*.2)));
+      const al=Math.min(1,d/2.5)/Math.max(1,st*.35);if(d>.4)for(let i=1;i<=st;i++){const f=i/st;dab((bx+(nx-bx)*f)*TW,(by+(ny-by)*f)*TH,rad,al)}
+      bx=nx;by=ny;
+    }
+    gl.activeTexture(gl.TEXTURE2);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,tr);
+    gl.uniform1f(U('t'),now/1000);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  })(performance.now());
+}
 
 /* entrada dos títulos */
 requestAnimationFrame(()=>setTimeout(()=>document.body.classList.add('ready'),250));
