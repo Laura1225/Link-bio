@@ -307,7 +307,7 @@ const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 /* conteúdo dinâmico */
 const imgs=['p1.jpg','p2.webp','p3.webp','p4.webp','p5.webp','p6.jpg'];
 const railSet=[...imgs,...imgs];
-$('#rail').innerHTML=[...railSet,...railSet].map(f=>`<div class="card"><img src="/Joaovictor//Joaovictor/img/${f}" alt="Projeto do portfólio" loading="lazy"></div>`).join('');
+$('#rail').innerHTML=[...railSet,...railSet].map(f=>`<div class="card"><img src="/Joaovictor/img/${f}" alt="Projeto do portfólio" loading="lazy"></div>`).join('');
 const mods=[
  ['Fundamentos que vendem','Hierarquia, contraste e leitura em 1 segundo: a base de toda arte que converte.'],
  ['Flyers de alta conversão','Estrutura, oferta e chamada: como montar flyers que fazem o cliente agir.'],
@@ -315,8 +315,8 @@ const mods=[
  ['Tipografia e composição','Fontes, pesos e grids pra suas artes saírem do genérico de vez.'],
  ['Luz, cor e tratamento','Recorte, iluminação e color grading no nível das referências grandes.'],
  ['Portfólio e clientes','Como apresentar seu trabalho, precificar e fechar os primeiros projetos.']];
-$('#mods').innerHTML=mods.map((m,i)=>`<li class="mod rv"><span class="n">Módulo ${i+1}</span><div><h3 class="cond">${m[0]}</h3><p class="d">${m[1]}</p></div><div class="th"><img src="/Joaovictor//Joaovictor/img/${imgs[i]}" alt="" loading="lazy"></div></li>`).join('');
-$('#deps').innerHTML=imgs.concat(imgs.slice(0,2)).map((f,i)=>`<article class="dep"><img src="/Joaovictor//Joaovictor/img/${f}" alt="" loading="lazy"><span class="play"><svg width="20" height="22" viewBox="0 0 20 22"><path d="M2 1.5v19L19 11z" fill="#fff"/></svg></span><div class="q"><p>Espaço para o depoimento do aluno sobre a Comunidade&nbsp;JV.</p><span>Aluno ${i+1} · Comunidade JV</span></div></article>`).join('');
+$('#mods').innerHTML=mods.map((m,i)=>`<li class="mod rv"><span class="n">Módulo ${i+1}</span><div><h3 class="cond">${m[0]}</h3><p class="d">${m[1]}</p></div><div class="th"><img src="/Joaovictor/img/${imgs[i]}" alt="" loading="lazy"></div></li>`).join('');
+$('#deps').innerHTML=imgs.concat(imgs.slice(0,2)).map((f,i)=>`<article class="dep"><img src="/Joaovictor/img/${f}" alt="" loading="lazy"><span class="play"><svg width="20" height="22" viewBox="0 0 20 22"><path d="M2 1.5v19L19 11z" fill="#fff"/></svg></span><div class="q"><p>Espaço para o depoimento do aluno sobre a Comunidade&nbsp;JV.</p><span>Aluno ${i+1} · Comunidade JV</span></div></article>`).join('');
 
 /* menu pill + mobile */
 const nav=$('#nav'),pill=nav.querySelector('.pill'),links=$$('.nav a');
@@ -403,8 +403,8 @@ if(gl){
 
 /* entrada dos títulos */
 const t0i=performance.now();
-const openIntro=()=>{const w=Math.max(0,1500-(performance.now()-t0i));setTimeout(()=>{$('#intro').classList.add('done');document.documentElement.classList.remove('lock');setTimeout(()=>{document.body.classList.add('ready');window.startDemo&&window.startDemo()},450);setTimeout(()=>$('#intro').remove(),1300)},w)};
-window.heroReady?openIntro():addEventListener('heroready',openIntro,{once:true});setTimeout(()=>{if($('#intro')&&!$('#intro').classList.contains('done'))openIntro()},4500);
+let opened=false;const openIntro=()=>{if(opened)return;opened=true;const w=Math.max(0,1500-(performance.now()-t0i));setTimeout(()=>{$('#intro').classList.add('done');document.documentElement.classList.remove('lock');setTimeout(()=>{document.body.classList.add('ready');window.startDemo&&window.startDemo()},450);setTimeout(()=>$('#intro')&&$('#intro').remove(),1300)},w)};
+window.heroReady?openIntro():addEventListener('heroready',openIntro,{once:true});setTimeout(openIntro,4500);
 $$('.big').forEach(h=>h.querySelectorAll('.w>span').forEach((s,i)=>s.style.transitionDelay=(.15+i*.09)+'s'));
 
 /* reveal */
