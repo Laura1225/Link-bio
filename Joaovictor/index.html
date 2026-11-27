@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="lock">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -187,6 +187,12 @@ em{font-style:normal;color:var(--red)}
 @media(max-width:900px){.orb{top:590px}}
 .giant{position:relative;white-space:nowrap;font-size:clamp(120px,19vw,380px);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.14);margin:0 -5vw;display:flex;gap:.3em;animation:rail 40s linear infinite;width:max-content}
 
+.intro{position:fixed;inset:0;z-index:300;background:var(--red);display:grid;place-items:center;clip-path:inset(0 0 0 0);transition:clip-path 1.1s cubic-bezier(.77,0,.18,1)}
+.intro.done{clip-path:inset(0 0 100% 0)}
+.intro img{width:clamp(150px,13vw,240px);height:auto;filter:brightness(0) invert(1);animation:ipulse 1.6s cubic-bezier(.16,1,.3,1) both}
+.intro span{position:absolute;bottom:28px;left:0;right:0;text-align:center;font:600 11px/1 Inter,sans-serif;letter-spacing:.08em;color:#fff;text-transform:uppercase}
+@keyframes ipulse{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+html.lock,html.lock body{overflow:hidden}
 /* reveal on scroll */
 .rv{opacity:0;transform:translateY(40px);transition:opacity 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
 .rv.shown{opacity:1;transform:none}
@@ -194,6 +200,7 @@ em{font-style:normal;color:var(--red)}
 </style>
 </head>
 <body>
+<div class="intro" id="intro"><img src="/Joaovictor/img/logo.svg" alt="" width="183" height="49"><span>Comunidade JV</span></div>
 <div class="cur"></div><div class="cur-dot"></div>
 
 <header class="top" id="top">
@@ -366,17 +373,19 @@ if(gl){
   const size=()=>{const d=Math.min(devicePixelRatio||1,2);W=cv.width=Math.round(hero.clientWidth*d);H=cv.height=Math.round(hero.clientHeight*d);gl.viewport(0,0,W,H);gl.uniform2f(U('r'),W,H);
     TW=tr.width=Math.max(64,Math.round(hero.clientWidth/4));TH=tr.height=Math.max(64,Math.round(hero.clientHeight/4));tc.fillStyle='#000';tc.fillRect(0,0,TW,TH)};
   size();new ResizeObserver(size).observe(hero);
-  Promise.all([load($('.fb').currentSrc||'/Joaovictor/img/hero-cima.webp'),load('/Joaovictor/img/hero-baixo.webp')]).then(([A,B])=>{tex(0,A);tex(1,B);tex(2,tr);ok=true;cv.classList.add('on')});
+  Promise.all([load($('.fb').currentSrc||'/Joaovictor/img/hero-cima.webp'),load('/Joaovictor/img/hero-baixo.webp')]).then(([A,B])=>{tex(0,A);tex(1,B);tex(2,tr);ok=true;cv.classList.add('on');window.heroReady=1;dispatchEvent(new Event('heroready'))});
   /* pincel: segue o mouse com suavização e pinta o rastro */
-  let mx=-1,my=-1,bx=-1,by=-1,lastMove=0,auto=!fine,t0=performance.now(),vis=true;
+  let mx=-1,my=-1,bx=-1,by=-1,lastMove=0,auto=false,t0=performance.now(),vis=true,demo=0,user=false;
+  window.startDemo=()=>{demo=performance.now()};
   new IntersectionObserver(([e])=>vis=e.isIntersecting).observe(hero);
-  const pt=e=>{const r=hero.getBoundingClientRect();mx=(e.clientX-r.left)/r.width;my=(e.clientY-r.top)/r.height;if(bx<0){bx=mx;by=my}auto=false;lastMove=performance.now()};
+  const pt=e=>{const r=hero.getBoundingClientRect();mx=(e.clientX-r.left)/r.width;my=(e.clientY-r.top)/r.height;if(bx<0){bx=mx;by=my}auto=false;user=true;demo=0;lastMove=performance.now()};
   hero.addEventListener('pointermove',pt,{passive:true});hero.addEventListener('pointerdown',pt,{passive:true});
   hero.addEventListener('pointerleave',()=>{mx=-1;bx=-1});
   const dab=(x,y,rad,al)=>{const g=tc.createRadialGradient(x,y,0,x,y,rad);g.addColorStop(0,`rgba(255,255,255,${.9*al})`);g.addColorStop(.55,`rgba(255,255,255,${.55*al})`);g.addColorStop(1,'rgba(255,255,255,0)');tc.fillStyle=g;tc.beginPath();tc.arc(x,y,rad,0,7);tc.fill()};
   (function loop(now){
     requestAnimationFrame(loop);if(!vis||!ok)return;
-    if(!fine&&now-lastMove>2200)auto=true;
+    if(demo&&!user){const k=(now-demo)/2600;if(k<1){if(k<.5){mx=.26+.52*(k/.5);my=.40}else{mx=.78-.5*((k-.5)/.5);my=.53}if(bx<0){bx=mx;by=my}}else{demo=0;mx=-1;bx=-1;t0=now;if(!fine)setTimeout(()=>{if(!user)auto=true},1200)}}
+    if(!fine&&user&&now-lastMove>2600)auto=true;
     if(auto){const t=(now-t0)/1000;mx=.5+Math.sin(t*.9)*.16;my=.45+Math.sin(t*1.4)*.12;if(bx<0){bx=mx;by=my}}
     tc.globalCompositeOperation='source-over';tc.fillStyle='rgba(0,0,0,.045)';tc.fillRect(0,0,TW,TH);
     if(mx>=0){
@@ -393,7 +402,9 @@ if(gl){
 }
 
 /* entrada dos títulos */
-requestAnimationFrame(()=>setTimeout(()=>document.body.classList.add('ready'),250));
+const t0i=performance.now();
+const openIntro=()=>{const w=Math.max(0,1500-(performance.now()-t0i));setTimeout(()=>{$('#intro').classList.add('done');document.documentElement.classList.remove('lock');setTimeout(()=>{document.body.classList.add('ready');window.startDemo&&window.startDemo()},450);setTimeout(()=>$('#intro').remove(),1300)},w)};
+window.heroReady?openIntro():addEventListener('heroready',openIntro,{once:true});setTimeout(()=>{if($('#intro')&&!$('#intro').classList.contains('done'))openIntro()},4500);
 $$('.big').forEach(h=>h.querySelectorAll('.w>span').forEach((s,i)=>s.style.transitionDelay=(.15+i*.09)+'s'));
 
 /* reveal */
